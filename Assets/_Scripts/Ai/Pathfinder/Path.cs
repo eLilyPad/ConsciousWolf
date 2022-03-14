@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace Ai.Pathfinder
+namespace Lily.Ai.Pathfinder
 {
   public class Path
   {

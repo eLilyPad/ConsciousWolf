@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using UnityEngine;
 
-namespace Ai.Pathfinder
+namespace Lily.Ai.Pathfinder
 {
   public class Pathfinding : MonoBehaviour
   {

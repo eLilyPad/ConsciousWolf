@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Ai.Pathfinder
+namespace Lily.Ai.Pathfinder
 {
 public class Grid : MonoBehaviour
 {

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Threading;
 using UnityEngine;
 
-namespace Ai.Pathfinder
+namespace Lily.Ai.Pathfinder
 {
 public class PathRequestManager : MonoBehaviour
 {
