@@ -11,8 +11,12 @@ public class DestroyOnCollision : MonoBehaviour
 
 	void OnCollisionEnter(Collision collide)
 	{
+		Debug.Log("DestroyCollider");
 		StartCoroutine(DestroyCollider(collide.gameObject));
-        Debug.Log("DestroyCollider");
+	}
+	void OnCollisionExit(Collision collide)
+	{
+
 	}
 
 	IEnumerator DestroyCollider(GameObject collider)

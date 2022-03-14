@@ -1,6 +1,6 @@
 using System;
 
-namespace Ai.Pathfinder
+namespace Lily.Ai.Pathfinder
 {
 public class Heap<T> where T : IHeapItem<T>
 {
