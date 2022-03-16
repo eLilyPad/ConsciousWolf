@@ -8,7 +8,7 @@ namespace Lily.Ai.Pathfinder
 public class PathRequestManager : MonoBehaviour
 {
 
-  Queue<PathResult> results = new Queue<PathResult>();
+  Queue<PathResult> results = new Queue<PathResult>();//holds the request for paths
 
   static PathRequestManager instance;
   Pathfinding pathfinding;

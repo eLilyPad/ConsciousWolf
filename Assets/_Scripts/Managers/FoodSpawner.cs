@@ -26,7 +26,7 @@ public class FoodSpawner : MonoBehaviour
     
 	void Update()
 	{
-		spawnCount = GameObject.FindGameObjectsWithTag("Pray").Length;
+		spawnCount = GameObject.FindGameObjectsWithTag(spawn.tag).Length;
 		if (spawnCount <= spawnCapacity)
 		{
 			Spawn();
