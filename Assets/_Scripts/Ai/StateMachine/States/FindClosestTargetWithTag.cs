@@ -15,6 +15,7 @@ namespace Lily.Ai.ActionStates
 		public void Tick()
 		{
 			ai.target = TheNearestWithTag();
+			
 		}
 
 		private Transform TheNearestWithTag()
@@ -31,6 +32,7 @@ namespace Lily.Ai.ActionStates
 				{
 					closestTarget = target.transform;
 					closestDistance = distanceFromTarget;
+					ai.oldTarget = TheNearestWithTag().name;
 				}
 			}
 

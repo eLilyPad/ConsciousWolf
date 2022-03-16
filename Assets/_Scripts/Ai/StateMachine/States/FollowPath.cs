@@ -6,7 +6,7 @@ namespace Lily.Ai.ActionStates
 	using Ai;
 	public class FollowPath : IState
 	{
-		private readonly BasicAI _ai;
+		private BasicAI _ai;
 		private Vector3 _lastPosition = Vector3.zero;
 		
 		Path _path;
@@ -17,11 +17,14 @@ namespace Lily.Ai.ActionStates
 			_path = path;
 		}
 		public void Tick()
+		{}		
+		public void OnEnter()
 		{
-			if(_ai.currentPath !=null)Path();
+			//TakePath();
 		}
-
-		void Path()
+		public void OnExit()
+		{}
+		void TakePath()
 		{
 			Debug.Log("FollowPath");
 			bool followingPath = true;
@@ -63,10 +66,5 @@ namespace Lily.Ai.ActionStates
 				}
 			}
 		}
-
-		public void OnEnter()
-		{}
-		public void OnExit()
-		{}
 	}
 }

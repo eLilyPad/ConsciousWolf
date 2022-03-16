@@ -258,7 +258,7 @@ MonoBehaviour:
   turnSpeed: 3
   turnDst: 5
   stoppingDst: 10
-  targetmoved: 0
+  PathFound: 0
 --- !u!1 &526112082
 GameObject:
   m_ObjectHideFlags: 0
@@ -860,7 +860,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 23266c5288169af45aef876d2ac4e411, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spawn: {fileID: 0}
+  spawn: {fileID: 2760571997666750771, guid: fa328507d1326264092060b1b758858c, type: 3}
   center: {fileID: 198579989}
   spawnCount: 1
   spawnCapacity: 2
@@ -883,6 +883,10 @@ PrefabInstance:
     - target: {fileID: 1815549049225436136, guid: c4371d59f4d720b41a05583a5ac172c3, type: 3}
       propertyPath: m_Name
       value: Wolf
+      objectReference: {fileID: 0}
+    - target: {fileID: 1815549049225436136, guid: c4371d59f4d720b41a05583a5ac172c3, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1815549049225436136, guid: c4371d59f4d720b41a05583a5ac172c3, type: 3}
       propertyPath: m_TagString
