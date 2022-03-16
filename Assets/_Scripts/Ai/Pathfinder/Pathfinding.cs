@@ -22,15 +22,16 @@ namespace Lily.Ai.Pathfinder
       Stopwatch sw = new Stopwatch();
       sw.Start();
 
-      Vector3[] waypoints = new Vector3[0];
+      Vector3[] waypoints = new Vector3[0];//Store waypoints
       bool pathSuccess = false;
 
+      //find the closest node from the world point
       Node startNode = grid.NodeFromWorldPoint(request.pathStart);
       Node targetNode = grid.NodeFromWorldPoint(request.pathEnd);
-      startNode.parent = startNode;
+      startNode.parent = startNode;//sets the node to be the origin of the path
 
 
-      if (startNode.walkable && targetNode.walkable)
+      if (startNode.walkable && targetNode.walkable)//check if both points are reachable
       {
         Heap<Node> openSet = new Heap<Node>(grid.MaxSize);
         HashSet<Node> closedSet = new HashSet<Node>();
@@ -44,16 +45,16 @@ namespace Lily.Ai.Pathfinder
           if (currentNode == targetNode)
           {
             sw.Stop();
-            //print ("Path found: " + sw.ElapsedMilliseconds + " ms");
             pathSuccess = true;
             break;
+            // Ends the path at the target node
           }
 
           foreach (Node neighbour in grid.GetNeighbours(currentNode))
           {
             if (!neighbour.walkable || closedSet.Contains(neighbour))
             {
-              continue;
+              continue;//skips un walkable nodes next to this node
             }
 
             int newMovementCostToNeighbour = currentNode.gCost + GetDistance(currentNode, neighbour) + neighbour.movementPenalty;

@@ -55,6 +55,7 @@ public class Grid : MonoBehaviour
 		{
 			
 			nodeDiameter = nodeRadius * 2;
+			//scales the gird size to fit the nodes
 			gridSizeX = Mathf.RoundToInt(gridWorldSize.x / nodeDiameter);
 			gridSizeY = Mathf.RoundToInt(gridWorldSize.y / nodeDiameter);
 
@@ -62,67 +63,51 @@ public class Grid : MonoBehaviour
 			{
 				walkableMask.value |= region.terrainMask.value;
 				walkableRegionsDictionary.Add((int)Mathf.Log(region.terrainMask.value, 2), region.terrainPenalty);
+				//Assign cost penalties to nodes in specified regions
 			}
-
-			CreateGrid();
-			//Vector2 sampleCentre = new Vector2(gridSizeX / 2, gridSizeY / 2);
-			//heightMap = HeightMapGenerator.GenerateHeightMap(gridSizeX, gridSizeY, heightMapSettings, sampleCentre);
-			
-		}
-		public void OnHeightMapReceived()
-		{
 			CreateGrid();
 		}
 
 	#endregion
 
 	#region Grid Creation
-	#endregion
 	public void CreateGrid()
 	{
 
-		grid = new Node[gridSizeX, gridSizeY];
+		grid = new Node[gridSizeX, gridSizeY];//creates nodes to fit the grid
 		Vector3 worldBottomLeft = transform.position - Vector3.right * gridWorldSize.x / 2 - Vector3.forward * gridWorldSize.y / 2;
+		//finds the bottom of the grid to start building the grid from the given centre and the gris size
 
-		for (int x = 0; x < gridSizeX; x++)
+		for (int x = 0; x < gridSizeX; x++)//runs code on each value of x
 		{
-			for (int y = 0; y < gridSizeY; y++)
+			
+			for (int y = 0; y < gridSizeY; y++)//runs code on each value of y
 			{
-				Vector3 worldPoint = worldBottomLeft + Vector3.right * (x * nodeDiameter + nodeRadius) + Vector3.forward * (y * nodeDiameter + nodeRadius);
-				bool walkable = !(Physics.CheckSphere(worldPoint, nodeRadius, unwalkableMask));
+				Vector3 worldPoint = worldBottomLeft + Vector3.right * (x * nodeDiameter + nodeRadius) + Vector3.forward * (y * nodeDiameter + nodeRadius);//locks the position of the node with the grid in the world
+				bool walkable = !(Physics.CheckSphere(worldPoint, nodeRadius, unwalkableMask));//check if the node is touching a un-touchable region
 
-				int movementPenalty = 0;
+				int movementPenalty = 0;//Resets the penalty of the node
 
-				Ray ray = new Ray(worldPoint + Vector3.up * 50, Vector3.down);
-				RaycastHit hit;
-				if (Physics.Raycast(ray, out hit, 100, walkableMask))
+				Ray ray = new Ray(worldPoint + Vector3.up * 50, Vector3.down);//Ray att node point pointing down
+				RaycastHit hit;//holds the ray hit information
+				if (Physics.Raycast(ray, out hit, 100, walkableMask))//cast the ray and check if it hits the walkable region
 				{
-					walkableRegionsDictionary.TryGetValue(hit.collider.gameObject.layer, out movementPenalty);
+					walkableRegionsDictionary.TryGetValue(hit.collider.gameObject.layer, out movementPenalty);//check if the region has any movement penalty
 				}
 
 				if (!walkable)
 				{
-					movementPenalty += obstacleProximityPenalty;
+					movementPenalty += obstacleProximityPenalty;//sets the penalty high to become unwalkable node
 				}
 
-				//Debug.Log(worldPoint);
-				//worldPoint.z = FindNodeHeight(x, y);
-				grid[x, y] = new Node(walkable, worldPoint, x, y, movementPenalty);
+				grid[x, y] = new Node(walkable, worldPoint, x, y, movementPenalty);//creats a new grid with nodes in place
 			}
 		}
 
 		BlurPenaltyMap(3);
 
 	}
-
-	// float FindNodeHeight(int x, int y)
-	// {
-
-	// 	float[,] heightValues = heightMap.values;
-	// 	float height = heightValues[x, y];
-	// 	Debug.Log(height);
-	// 	return height;
-	// }
+	#endregion
 
 	void BlurPenaltyMap(int blurSize)
 	{
@@ -180,24 +165,25 @@ public class Grid : MonoBehaviour
 			}
 		}
 	}
-
+	//Finds the nodes that are next to the current node
 	public List<Node> GetNeighbours(Node node)
 	{
-		List<Node> neighbours = new List<Node>();
+		List<Node> neighbours = new List<Node>();//creates a list of nodes next to the current node
 
 		for (int x = -1; x <= 1; x++)
 		{
 			for (int y = -1; y <= 1; y++)
 			{
+				// checks the grid next to the current node
 				if (x == 0 && y == 0)
-					continue;
+					continue;//skips the current node
 
-				int checkX = node.gridX + x;
-				int checkY = node.gridY + y;
+				int checkX = node.gridX + x;//finds the current node position and checks the x axis
+				int checkY = node.gridY + y;//finds the current node position and checks the y axis 
 
 				if (checkX >= 0 && checkX < gridSizeX && checkY >= 0 && checkY < gridSizeY)
 				{
-					neighbours.Add(grid[checkX, checkY]);
+					neighbours.Add(grid[checkX, checkY]);//skips current node and put the rest in the neighbours list
 				}
 			}
 		}
@@ -205,7 +191,7 @@ public class Grid : MonoBehaviour
 		return neighbours;
 	}
 
-
+	//Find the node relative to the world positions
 	public Node NodeFromWorldPoint(Vector3 worldPosition)
 	{
 		float percentX = (worldPosition.x + gridWorldSize.x / 2) / gridWorldSize.x;
