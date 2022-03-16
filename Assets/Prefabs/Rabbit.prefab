@@ -10,7 +10,6 @@ GameObject:
   m_Component:
   - component: {fileID: 5296105018882928866}
   - component: {fileID: 6114137984952116211}
-  - component: {fileID: 394431169518710686}
   - component: {fileID: 103695912}
   - component: {fileID: 103695911}
   m_Layer: 0
@@ -51,24 +50,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &394431169518710686
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5296105018882928867}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 97a92928ec380704293eb3925fc70b20, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  target: {fileID: 0}
-  targetTag: Food
-  speed: 20
-  turnSpeed: 3
-  turnDst: 5
-  stoppingDst: 10
 --- !u!65 &103695912
 BoxCollider:
   m_ObjectHideFlags: 0
