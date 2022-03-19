@@ -14,6 +14,8 @@ namespace Lily.Ai
 			protected BasicStateMachine _stateMachine;
 			protected BasicStateMachine _targetStateMachine;
 
+			protected PathPlanner _pathPlanner;
+
 			public Transform target;
 			public string targetTag;
 
@@ -25,8 +27,6 @@ namespace Lily.Ai
     	public float turnSpeed = 3;
     	public float turnDst = 5;
   	  public float stoppingDst = 10;
-
-			Path oldPath;
 			public Path currentPath;
 			public bool PathFound;
 
@@ -34,7 +34,7 @@ namespace Lily.Ai
 
 		void Awake()
 		{
-			StartCoroutine(UpdatePath());
+			var _pathPlanner = new PathPlanner();
 			PathFound = false;
 			_targetStateMachine = new BasicStateMachine();
 			_stateMachine = new BasicStateMachine();//calls a new state machine
@@ -73,47 +73,6 @@ namespace Lily.Ai
 		{
 			_stateMachine.Tick();
 			//_targetStateMachine.Tick();
-			
-			if(oldTarget != target.name)
-			{
-				StartCoroutine(UpdatePath());
-			}
-		}
-
-		public void OnPathFound(Vector3[] waypoints, bool pathSuccessful)
-		{
-			if (pathSuccessful)
-			{
-				//check if all waypoints are correct
-				currentPath = new Path(waypoints, transform.position, turnDst, stoppingDst);
-
-				StopCoroutine("FollowPath");
-				StartCoroutine("FollowPath");
-			}
-		}
-
-		IEnumerator UpdatePath()
-		{
-
-			if (Time.timeSinceLevelLoad < .3f)
-			{
-				yield return new WaitForSeconds(.3f);
-			}
-			PathRequestManager.RequestPath(new PathRequest(transform.position, target.position, OnPathFound));
-
-			float sqrMoveThreshold = pathUpdateMoveThreshold * pathUpdateMoveThreshold;
-			Vector3 targetPosOld = target.position;
-
-			while (true)
-			{
-				yield return new WaitForSeconds(minPathUpdateTime);
-				//print(((target.position - targetPosOld).sqrMagnitude) + "    " + sqrMoveThreshold);
-				if ((target.position - targetPosOld).sqrMagnitude > sqrMoveThreshold)
-				{
-					PathRequestManager.RequestPath(new PathRequest(transform.position, target.position, OnPathFound));
-					targetPosOld = target.position;
-				}
-			}
 		}
 	}
 }
