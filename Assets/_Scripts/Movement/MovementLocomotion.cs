@@ -10,14 +10,14 @@ namespace Lily.MovementSystem.Locomotion
 	{
 		#region Variables
 		Rigidbody rb;
-		//MovementController controller;
+		MovementController mc;
 		[SerializeField] Animator anim;
 		[SerializeField] Camera camera;
 		//-----------------------------------------------------------
 		//Movement Parameters
 		[SerializeField] Transform orientation;
 		float _acceleration;
-		float maxSpeed;
+		float maxSpeed = 10f;
 		float currentSpeed;
 
 		bool slowingDown;
@@ -96,15 +96,15 @@ namespace Lily.MovementSystem.Locomotion
 			//             break;
 			//     }
 			// }
-			ControlDrag();
+			//ControlDrag();
 			//stickFloor();
 		}
 		
 		#region Walking
-		public void WalkForward()
+		public void WalkForward(Rigidbody rb, float acceleration)
 		{
 			moveType = MoveType.Walking;
-			Move(1, 0, 1);
+			Move(1, 0, acceleration);
 			ControlDrift();
 		}
 
@@ -112,8 +112,8 @@ namespace Lily.MovementSystem.Locomotion
 		{
 			// slow movement forward
 			//rb.AddRelativeForce(direction * acceleration * Time.deltaTime, ForceMode.Acceleration);
-			rb.AddForce(direction * acceleration * Time.deltaTime, ForceMode.Acceleration);
-			//Debug.Log("Walking");
+			rb.AddForce(direction * acceleration * Time.deltaTime);
+			Debug.Log("Walking");
 		}
 
 		#endregion

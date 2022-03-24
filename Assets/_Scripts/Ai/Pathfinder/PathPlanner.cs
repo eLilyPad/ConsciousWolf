@@ -33,7 +33,6 @@ namespace Lily.Ai.Pathfinder
 				// 	closestDistance = distanceFromTarget;
 				// 	ai.oldTarget = TheNearestWithTag().name;
 				// }
-		}
 			public void TargetWithTag(string targetTag)
 			{
 				GameObject[] targets = GameObject.FindGameObjectsWithTag(targetTag);
