@@ -27,7 +27,15 @@ namespace Lily.MovementSystem.Controller
 
       #endregion
 
+         Rigidbody rb;
+
       #region Setup
+
+      public MovementController(Rigidbody _rb)
+      {
+         rb = _rb;
+      }
+
       void Awake()
       {
          //conditions = GetComponent<MovementConditions>();
@@ -51,9 +59,9 @@ namespace Lily.MovementSystem.Controller
 
       #region Locomotion
 
-      public void Walk(bool forward = true)
+      public void Walk(Rigidbody _rb, float acceleration,  bool forward = true)
       {
-         locomotion.WalkForward();
+         locomotion.WalkForward(_rb, acceleration);
       }
 
       public void StopMoving()

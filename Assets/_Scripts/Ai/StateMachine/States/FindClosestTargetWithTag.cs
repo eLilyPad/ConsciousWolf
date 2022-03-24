@@ -32,7 +32,7 @@ namespace Lily.Ai.ActionStates
 				{
 					closestTarget = target.transform;
 					closestDistance = distanceFromTarget;
-					ai.oldTarget = TheNearestWithTag().name;
+					//ai.oldTarget = TheNearestWithTag().name;
 				}
 			}
 
