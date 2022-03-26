@@ -127,9 +127,9 @@ GameObject:
   m_Component:
   - component: {fileID: 1815549049225436137}
   - component: {fileID: 1815549049225436138}
-  - component: {fileID: 1852768886}
-  - component: {fileID: 4392696405757459270}
   - component: {fileID: 7622208587937370997}
+  - component: {fileID: 1852768890}
+  - component: {fileID: 1852768886}
   m_Layer: 0
   m_Name: Wolf
   m_TagString: Predator
@@ -160,51 +160,22 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1815549049225436136}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fa356cbea7497f04880f6dfa8c6473db, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  target: {fileID: 0}
-  speed: 20
-  turnSpeed: 3
-  turnDst: 5
-  stoppingDst: 10
---- !u!114 &1852768886
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1815549049225436136}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6e7f67373c0905940a13ace8f31d8ebf, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  collisionType: Pray
-  timeBetweenDestroy: 0.5
---- !u!114 &4392696405757459270
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1815549049225436136}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a41e91fcafe5b874096942c68a7a62e2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   rb: {fileID: 7622208587937370997}
   target: {fileID: 0}
   targetTag: Pray
   speed: 20
-  acceleration: 0.58
+  acceleration: 1
   turnSpeed: 3
   turnDst: 5
   stoppingDst: 0
   PathFound: 0
+  PathComplete: 0
+  targetMoved: 0
 --- !u!54 &7622208587937370997
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -219,8 +190,35 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 0
+  m_Constraints: 112
   m_CollisionDetection: 0
+--- !u!65 &1852768890
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1815549049225436136}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1, y: 3.5084372, z: 6.7640676}
+  m_Center: {x: 0, y: 1.7167673, z: 0.2490648}
+--- !u!114 &1852768886
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1815549049225436136}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6e7f67373c0905940a13ace8f31d8ebf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  collisionType: Pray
+  timeBetweenDestroy: 0.5
 --- !u!1001 &1815549050389321849
 PrefabInstance:
   m_ObjectHideFlags: 0

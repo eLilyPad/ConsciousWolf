@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 6114137984952116211}
   - component: {fileID: 103695912}
   - component: {fileID: 103695911}
-  - component: {fileID: 265752233}
+  - component: {fileID: 314947751}
   m_Layer: 0
   m_Name: Rabbit
   m_TagString: Pray
@@ -78,7 +78,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   collisionType: Food
   timeBetweenDestroy: 0.5
---- !u!114 &265752233
+--- !u!114 &314947751
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -87,18 +87,20 @@ MonoBehaviour:
   m_GameObject: {fileID: 5296105018882928867}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a41e91fcafe5b874096942c68a7a62e2, type: 3}
+  m_Script: {fileID: 11500000, guid: 97a92928ec380704293eb3925fc70b20, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   rb: {fileID: 6114137984952116211}
   target: {fileID: 0}
   targetTag: Food
   speed: 20
-  acceleration: 0.54
+  acceleration: 9
   turnSpeed: 3
   turnDst: 5
   stoppingDst: 0
   PathFound: 0
+  PathComplete: 0
+  targetMoved: 0
 --- !u!1001 &5296105017263416760
 PrefabInstance:
   m_ObjectHideFlags: 0

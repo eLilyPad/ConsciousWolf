@@ -32,6 +32,8 @@ namespace Lily.Ai
   		public float stoppingDst = 10;
 			public Path currentPath;
 			public bool PathFound;
+			public bool PathComplete;
+			public bool targetMoved;
 
 		#endregion
 

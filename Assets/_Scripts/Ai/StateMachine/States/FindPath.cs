@@ -15,6 +15,8 @@ namespace Lily.Ai.ActionStates
     private Vector3 targetPosOld;
     private Vector3 targetPos;
     private Vector3 currentPos;
+
+    public bool targetMoved;
 		public FindPath(BasicAI _ai)
 		{
 			ai = _ai;
@@ -39,11 +41,12 @@ namespace Lily.Ai.ActionStates
       if (pathSuccessful)
       {
         ai.currentPath = new Path(waypoints, ai.transform.position, ai.turnDst, ai.stoppingDst);
-        ai.PathFound = true;
+        ai.targetMoved = false;
       }
     }
 		public void OnEnter() 
     {
+      ai.PathComplete = false;
       currentPos = ai.transform.position;
       targetPos = ai.target.position;
       UpdatePath(currentPos, targetPos);
