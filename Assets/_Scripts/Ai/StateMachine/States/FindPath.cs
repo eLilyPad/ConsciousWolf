@@ -26,7 +26,7 @@ namespace Lily.Ai.ActionStates
       if ((targetPos - targetPosOld).sqrMagnitude > sqrMoveThreshold)
       {
         UpdatePath(currentPos, targetPos);
-        ai.PathFound = false;
+        ai.targetMoved = true;
       }
     }
 
