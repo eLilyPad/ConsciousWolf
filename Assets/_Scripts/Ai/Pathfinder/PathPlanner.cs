@@ -3,58 +3,100 @@ using System.Collections;
 
 namespace Lily.Ai.Pathfinder
 {
+  using System;
+  using Ai;
+  using Lily.Ai.ActionStates;
+  using StateMachine;
+
   public class PathPlanner : MonoBehaviour
-  {  
-    public bool PathReady => path != null;
+	{
+  #region [black] Parameters
 
-    protected BasicAI _ai;
+    const float minPathUpdateTime = .2f;
+    const float pathUpdateMoveThreshold = .5f;
+    private float sqrMoveThreshold = pathUpdateMoveThreshold * pathUpdateMoveThreshold;
+		BasicAI ai;
 
-    public Transform[] availableTargets;
-    protected Path path;
+    protected BasicStateMachine _stateMachine;
 
-    protected Path prevPath;
+    public Vector3 targetPosition;
 
-    public PathPlanner instance;
+  #endregion
 
+  #region [teal] Initialize
+    public void StartPlanner(BasicAI _ai)
+    {
+      ai = _ai;
+
+      _stateMachine = new BasicStateMachine();
+			var Search = new FindClosestTargetWithTag(ai, ai.targetTag);
+			var FindPath = new FindPath(ai);
+
+      At(Search, FindPath, HasTarget());
+      At(FindPath, Search, HasNoTarget());
+
+      _stateMachine.SetState(Search);
+
+      void At(IState from, IState to, Func<bool> condition) => _stateMachine.AddTransition(from, to, condition);
+      Func<bool> HasTarget() => () => ai.target != null;
+			Func<bool> HasNoTarget() => () => ai.target == null;
+
+      //StartCoroutine(UpdatePath());
+    }
+
+    private void Update() 
+		{
+			_stateMachine.Tick();
+		}
+
+		// public void Tick()
+		// {
+    //   if ((ai.target.position - targetPosOld).sqrMagnitude > sqrMoveThreshold)
+    //   {
+    //     UpdatePath(currentPos, ai.target.position);
+    //     // ai.PathFound = false;
+    //   }
+    // }
     
+  #endregion
 
-    private void Awake()   
-		{}
+  #region [blue] Pathfinding
 
-		#region Target Selection 
-			// finds all targets with tags
-			// select the closest target and generate path to it
-			// does the same to the next target
+    IEnumerator UpdatePath()
+    {
+      if (Time.timeSinceLevelLoad < .3f)
+      {
+        yield return new WaitForSeconds(.3f);
+      }
+      PathRequestManager.RequestPath(new PathRequest(transform.position, ai.target.position, OnPathFound));
 
-				// float distanceFromTarget = Vector3.Distance(ai.transform.position, target.transform.position);
-				// if (distanceFromTarget < closestDistance)
-				// {
-				// 	closestTarget = target.transform;
-				// 	closestDistance = distanceFromTarget;
-				// 	ai.oldTarget = TheNearestWithTag().name;
-				// }
-			public void TargetWithTag(string targetTag)
-			{
-				GameObject[] targets = GameObject.FindGameObjectsWithTag(targetTag);
+      float sqrMoveThreshold = pathUpdateMoveThreshold * pathUpdateMoveThreshold;
+      Vector3 targetPosOld = ai.target.position;
 
-				foreach (GameObject target in targets)
-				{
+      while (true)
+      {
+        yield return new WaitForSeconds(minPathUpdateTime);
+        //print(((target.position - targetPosOld).sqrMagnitude) + "    " + sqrMoveThreshold);
+        if ((ai.target.position - targetPosOld).sqrMagnitude > sqrMoveThreshold)
+        {
+          PathRequestManager.RequestPath(new PathRequest(transform.position, ai.target.position, OnPathFound));
+          targetPosOld = ai.target.position;
+          ai.newPathFound = true;
+        }
+      }
+    }
+    
+    public void OnPathFound(Vector3[] waypoints, bool pathSuccessful)
+    {
+      if (pathSuccessful)
+      {
+        ai.currentPath = new Path(waypoints, ai.transform.position, ai.turnDst, ai.stoppingDst);
+        ai.newPathFound = false;
 
-				}
-			}
-		#endregion
-		#region ConstructPath
-			// creates a path from the current position and target position 
-		#endregion
-		#region ListPaths
-			// creates List of paths to take
-		#endregion
-		#region MergePaths
-			//Merge Paths to chain the paths together
-		#endregion
-		#region ChangePath
-			//Switch from the current path to the new path
-		#endregion
+        //Restart the path
+      }
+    }
 
-  }
+  #endregion
+	}
 }
