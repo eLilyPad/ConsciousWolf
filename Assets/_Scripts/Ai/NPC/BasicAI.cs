@@ -22,7 +22,7 @@ namespace Lily.Ai
 			protected BasicStateMachine _stateMachine;
 			public MovementController mc;
 			public Rigidbody rb;
-			public Transform target;
+			public Transform Target;
 
 			public Vector3 waypoint;
 			public string targetTag;
@@ -51,10 +51,11 @@ namespace Lily.Ai
 			public VisualEffect deathEffect;
 
 			private bool _isAlive = true;
-			public bool IsAlive   // property
-			{
+
+			public bool IsAlive 
+			{ 
 				get { return _isAlive; }   // get method
-				set { _isAlive = value; }  // set method
+				set { _isAlive = value; } 
 			}
 
 		#endregion

@@ -36,7 +36,7 @@ namespace Lily.Ai.ActionStates
 		void LookAtWaypoint()
 		{
 			//_ai.transform.LookAt(_ai.waypoint);
-			RotateYToTarget(_ai.waypoint, _ai.turnSpeed);
+			RotateYToTarget(_ai.waypoint, _ai.turnSpeed, false);
 		}
 		void MoveForward()
 		{

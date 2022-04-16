@@ -124,7 +124,6 @@ GameObject:
   - component: {fileID: 314947751}
   - component: {fileID: -3477016694787692104}
   - component: {fileID: 1293574280033302044}
-  - component: {fileID: 1719478610}
   m_Layer: 0
   m_Name: Rabbit
   m_TagString: Pray
@@ -164,7 +163,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 112
+  m_Constraints: 80
   m_CollisionDetection: 2
 --- !u!65 &103695912
 BoxCollider:
@@ -174,11 +173,11 @@ BoxCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5296105018882928867}
   m_Material: {fileID: 0}
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 1.27, y: 1.46, z: 1.96}
-  m_Center: {x: 0, y: 0.51, z: 0.11}
+  m_Size: {x: 1, y: 1.46, z: 1.91}
+  m_Center: {x: 0, y: 0.79, z: 0.09}
 --- !u!114 &314947751
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -192,12 +191,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rb: {fileID: 6114137984952116211}
-  target: {fileID: 0}
   waypoint: {x: 0, y: 0, z: 0}
   targetTag: Food
   maxSpeed: 20
   acceleration: 9
-  turnSpeed: 100
+  turnSpeed: 1
   turnDst: 5
   turnPenalty: 1
   stoppingDst: 0
@@ -205,7 +203,7 @@ MonoBehaviour:
   PathComplete: 0
   targetMoved: 0
   AtWayPoint: 0
-  AttackRange: 3
+  AttackRange: 2
   drawGizmos: 0
   turnThreshold: 10
   planner: {fileID: 0}
@@ -244,21 +242,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   targetPosition: {x: 0, y: 0, z: 0}
---- !u!114 &1719478610
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5296105018882928867}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 45a4b09c72f111046b63b5aa6b69b2a9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  collisionType: Predator
-  timeBetweenDestroy: 2.5
-  deathEffect: {fileID: 4893278535599750255, guid: d4607469b6c3d0444a743a1d0afc9dba, type: 3}
 --- !u!1001 &6528546093426315957
 PrefabInstance:
   m_ObjectHideFlags: 0

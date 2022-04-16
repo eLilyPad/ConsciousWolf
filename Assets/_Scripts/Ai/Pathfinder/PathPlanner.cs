@@ -39,29 +39,29 @@ namespace Lily.Ai.Pathfinder
 
     IEnumerator UpdatePath()
     {
-      if (Time.timeSinceLevelLoad < .3f || _ai.target == null)
+      if (Time.timeSinceLevelLoad < .3f || _ai.Target == null)
       {
         yield return new WaitForSeconds(.3f);
       }
-      PathRequestManager.RequestPath(new PathRequest(transform.position, _ai.target.position, OnPathFound));
+      PathRequestManager.RequestPath(new PathRequest(transform.position, _ai.Target.position, OnPathFound));
 
       float sqrMoveThreshold = pathUpdateMoveThreshold * pathUpdateMoveThreshold;
-      Vector3 targetPosOld = _ai.target.position;
+      Vector3 targetPosOld = _ai.Target.position;
 
       while (true)
       {
-        if (_ai.target == null)
+        if (_ai.Target == null)
         {
           yield return new WaitForSeconds(minPathUpdateTime);
         }
         else
         {
           yield return new WaitForSeconds(minPathUpdateTime);
-          //print(((target.position - targetPosOld).sqrMagnitude) + "    " + sqrMoveThreshold);
-          if ((_ai.target.position - targetPosOld).sqrMagnitude > sqrMoveThreshold)
+          //print(((Target.position - targetPosOld).sqrMagnitude) + "    " + sqrMoveThreshold);
+          if ((_ai.Target.position - targetPosOld).sqrMagnitude > sqrMoveThreshold)
           {
-            PathRequestManager.RequestPath(new PathRequest(transform.position, _ai.target.position, OnPathFound));
-            targetPosOld = _ai.target.position;
+            PathRequestManager.RequestPath(new PathRequest(transform.position, _ai.Target.position, OnPathFound));
+            targetPosOld = _ai.Target.position;
           }
         }
       }
@@ -69,7 +69,7 @@ namespace Lily.Ai.Pathfinder
     
     public void OnPathFound(Vector3[] waypoints, bool pathSuccessful)
     {
-      if (pathSuccessful && _ai.target != null)
+      if (pathSuccessful && _ai.Target != null)
       {
         Path _path = new Path(waypoints, _ai.transform.position, _ai.turnDst, _ai.stoppingDst);
 

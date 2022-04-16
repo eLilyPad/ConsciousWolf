@@ -48,7 +48,7 @@ namespace Lily.Ai.ActionStates
     {
       ai.PathComplete = false;
       currentPos = ai.transform.position;
-      targetPos = ai.target.position;
+      targetPos = ai.Target.position;
       UpdatePath(currentPos, targetPos);
     }
 		public void OnExit() { }

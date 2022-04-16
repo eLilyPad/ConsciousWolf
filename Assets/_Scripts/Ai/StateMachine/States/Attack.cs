@@ -24,7 +24,8 @@ namespace Lily.Ai.ActionStates
 		}
 		public void OnEnter()
     {
-      ai.audioManager.PlayRandomSound();
+			Debug.Log("Attacking "+ ai.name);
+      // ai.audioManager.PlayRandomSound();
     }
 		public void OnExit() { }
 	}

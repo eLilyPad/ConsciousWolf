@@ -14,7 +14,7 @@ namespace Lily.Ai.ActionStates
 		}
 		public void Tick()
 		{
-			ai.target = TheNearestWithTag();
+			ai.Target = TheNearestWithTag();
 			
 		}
 

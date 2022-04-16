@@ -22,9 +22,7 @@ namespace Lily.Ai.ActionStates
 			_rb.velocity = Vector3.zero;
 		}
 		public void OnEnter() 
-		{
-			ai.IsAlive = false;
-		}
+		{}
 		public void OnExit() 
 		{ }
 	}

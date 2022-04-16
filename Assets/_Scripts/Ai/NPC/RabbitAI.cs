@@ -26,7 +26,7 @@ namespace Lily.Ai
 			var Rest = new Rest(this, rb);
 			var MoveToTarget = new MoveToTarget(this, rb);
 
-			var Death = new Death(this, rb);
+			var Attack = new Attack(this, rb);
 			// var flee = new Flee(this, controller, enemyDetector);
 			// var chase = new Chase(this, controller, enemyDetector);
 
@@ -34,7 +34,7 @@ namespace Lily.Ai
 			
 			At(Rest, MoveToTarget, HasPath());
 			At(MoveToTarget, Rest, HasNoPath());
-			At(MoveToTarget, Rest, CompletedPath());
+			At(MoveToTarget, Attack, InAttackRange());
 
 			_stateMachine.AddAnyTransition(Search, HasNoTarget());
 
@@ -42,11 +42,11 @@ namespace Lily.Ai
 
 
 			void At(IState from, IState to, Func<bool> condition) => _stateMachine.AddTransition(from, to, condition);
-			Func<bool> HasTarget() => () => target != null;
-			Func<bool> HasNoTarget() => () => target == null;
+			Func<bool> HasTarget() => () => Target != null;
+			Func<bool> HasNoTarget() => () => Target == null;
 			Func<bool> HasPath() => () => currentPath != null;
 			Func<bool> HasNoPath() => () => currentPath == null;
-			Func<bool> CompletedPath() => () => PathComplete == true;
+			Func<bool> InAttackRange() => () => CheckAttackRange() == true;
 
 			planner.StartPlanner(this);
 		}
@@ -54,24 +54,18 @@ namespace Lily.Ai
 		private void Update() 
 		{
 			_stateMachine.Tick();
-			planner.CheckProgress();		
-		}
-		void OnCollisionEnter(Collision collide)
-		{
-			if (collide.gameObject.tag == "Predator")
-			{
-				Die();
-			}
-		}
-		void OnCollisionExit(Collision collide)
-		{
+			planner.CheckProgress();
 
+			if (Target != null)CheckAttackRange();	
 		}
-		void Die()
-		{
-			int lifetime = 3;
-			deathEffect.Play();
-			Destroy(this, lifetime);
-		}
+
+		bool CheckAttackRange()
+    {
+      float distanceFromTarget = Vector3.Distance(this.transform.position, Target.position);
+
+      if (distanceFromTarget <= AttackRange) return true;
+      return false;
+      //audioManager.PlayRandomSound();
+    }
 	}
 }
