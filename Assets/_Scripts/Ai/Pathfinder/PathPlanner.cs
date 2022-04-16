@@ -15,48 +15,23 @@ namespace Lily.Ai.Pathfinder
     const float minPathUpdateTime = .2f;
     const float pathUpdateMoveThreshold = .5f;
     private float sqrMoveThreshold = pathUpdateMoveThreshold * pathUpdateMoveThreshold;
-		BasicAI ai;
+		BasicAI _ai;
 
     protected BasicStateMachine _stateMachine;
 
     public Vector3 targetPosition;
 
+    int finishLineIndex;
+
   #endregion
 
   #region [teal] Initialize
-    public void StartPlanner(BasicAI _ai)
+    
+    public void StartPlanner(BasicAI ai)
     {
-      ai = _ai;
-
-      _stateMachine = new BasicStateMachine();
-			var Search = new FindClosestTargetWithTag(ai, ai.targetTag);
-			var FindPath = new FindPath(ai);
-
-      At(Search, FindPath, HasTarget());
-      At(FindPath, Search, HasNoTarget());
-
-      _stateMachine.SetState(Search);
-
-      void At(IState from, IState to, Func<bool> condition) => _stateMachine.AddTransition(from, to, condition);
-      Func<bool> HasTarget() => () => ai.target != null;
-			Func<bool> HasNoTarget() => () => ai.target == null;
-
-      //StartCoroutine(UpdatePath());
+      _ai = ai;
+      StartCoroutine(UpdatePath());
     }
-
-    private void Update() 
-		{
-			_stateMachine.Tick();
-		}
-
-		// public void Tick()
-		// {
-    //   if ((ai.target.position - targetPosOld).sqrMagnitude > sqrMoveThreshold)
-    //   {
-    //     UpdatePath(currentPos, ai.target.position);
-    //     // ai.PathFound = false;
-    //   }
-    // }
     
   #endregion
 
@@ -64,38 +39,107 @@ namespace Lily.Ai.Pathfinder
 
     IEnumerator UpdatePath()
     {
-      if (Time.timeSinceLevelLoad < .3f)
+      if (Time.timeSinceLevelLoad < .3f || _ai.target == null)
       {
         yield return new WaitForSeconds(.3f);
       }
-      PathRequestManager.RequestPath(new PathRequest(transform.position, ai.target.position, OnPathFound));
+      PathRequestManager.RequestPath(new PathRequest(transform.position, _ai.target.position, OnPathFound));
 
       float sqrMoveThreshold = pathUpdateMoveThreshold * pathUpdateMoveThreshold;
-      Vector3 targetPosOld = ai.target.position;
+      Vector3 targetPosOld = _ai.target.position;
 
       while (true)
       {
-        yield return new WaitForSeconds(minPathUpdateTime);
-        //print(((target.position - targetPosOld).sqrMagnitude) + "    " + sqrMoveThreshold);
-        if ((ai.target.position - targetPosOld).sqrMagnitude > sqrMoveThreshold)
+        if (_ai.target == null)
         {
-          PathRequestManager.RequestPath(new PathRequest(transform.position, ai.target.position, OnPathFound));
-          targetPosOld = ai.target.position;
-          ai.newPathFound = true;
+          yield return new WaitForSeconds(minPathUpdateTime);
+        }
+        else
+        {
+          yield return new WaitForSeconds(minPathUpdateTime);
+          //print(((target.position - targetPosOld).sqrMagnitude) + "    " + sqrMoveThreshold);
+          if ((_ai.target.position - targetPosOld).sqrMagnitude > sqrMoveThreshold)
+          {
+            PathRequestManager.RequestPath(new PathRequest(transform.position, _ai.target.position, OnPathFound));
+            targetPosOld = _ai.target.position;
+          }
         }
       }
     }
     
     public void OnPathFound(Vector3[] waypoints, bool pathSuccessful)
     {
-      if (pathSuccessful)
+      if (pathSuccessful && _ai.target != null)
       {
-        ai.currentPath = new Path(waypoints, ai.transform.position, ai.turnDst, ai.stoppingDst);
-        ai.newPathFound = false;
+        Path _path = new Path(waypoints, _ai.transform.position, _ai.turnDst, _ai.stoppingDst);
 
-        //Restart the path
+        _ai.currentPath = new Path(waypoints, _ai.transform.position, _ai.turnDst, _ai.stoppingDst);
+        finishLineIndex = _ai.currentPath.finishLineIndex;
+        StartPath();
       }
     }
+    
+  #endregion
+
+  #region [red]FollowPath
+
+    public void StartPath()
+    {
+      _ai.pathIndex = 0;
+      GetWaypoint();
+      _ai.PathComplete = false;
+    }
+
+    public void NextWayPoint()
+    {
+      _ai.pathIndex++;
+      GetWaypoint();
+    }
+
+    public void GetWaypoint()
+    {
+      if(_ai.pathIndex > _ai.currentPath.finishLineIndex)
+      {
+        _ai.pathIndex = _ai.currentPath.finishLineIndex;
+      }
+      else
+      {
+        _ai.waypoint = _ai.currentPath.lookPoints[_ai.pathIndex];
+      }
+    }
+  #endregion
+
+  #region [purple]Pathway Checks
+	  public void CheckProgress()
+		{ 
+      float distanceFromTarget = Vector3.Distance(_ai.transform.position, _ai.waypoint);
+			if(distanceFromTarget < _ai.stoppingDst+2)
+			{
+				WaypointPointReached();
+			}
+			else
+			{
+				_ai.AtWayPoint = false;
+			}
+		}
+
+    void WaypointPointReached()
+		{ 
+			_ai.AtWayPoint = true;
+			if (_ai.pathIndex == finishLineIndex)
+			{
+				CompletedPath();
+			}
+			else
+			{ 
+				NextWayPoint();
+			}
+		}
+
+		void CompletedPath()
+		{
+			_ai.PathComplete = true;
+		}
 
   #endregion
 	}

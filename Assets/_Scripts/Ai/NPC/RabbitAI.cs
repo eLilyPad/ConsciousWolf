@@ -8,39 +8,35 @@ namespace Lily.Ai
 	using StateMachine;
 	using Pathfinder;
 	using MovementSystem.Controller;
+  using UnityEngine.VFX;
 
   public class RabbitAI : BasicAI
 	{
 		#region Variables
-			
-			#region Pathfinding Constants
-				const float minPathUpdateTime = .2f;
-				const float pathUpdateMoveThreshold = .5f;
-				
-			#endregion
-
 		#endregion
 
 		void Awake()
 		{
-			//var _pathPlanner = new PathPlanner();
+			deathEffect.Stop();
+			planner = GetComponent<PathPlanner>();
 			rb = GetComponent<Rigidbody>();
 			_stateMachine = new BasicStateMachine();//calls a new state machine
 
 			var Search = new FindClosestTargetWithTag(this, targetTag);
 			var Rest = new Rest(this, rb);
-			var FollowPath = new FollowPath(this, currentPath, rb);
-			var FindPath = new FindPath(this);
+			var MoveToTarget = new MoveToTarget(this, rb);
+
+			var Death = new Death(this, rb);
 			// var flee = new Flee(this, controller, enemyDetector);
 			// var chase = new Chase(this, controller, enemyDetector);
 
-			At(Search, FindPath, HasTarget());
-			At(FindPath, FollowPath, HasPath());
-			At(FollowPath, FindPath, HasNoPath());
+			At(Search, Rest, HasTarget());
+			
+			At(Rest, MoveToTarget, HasPath());
+			At(MoveToTarget, Rest, HasNoPath());
+			At(MoveToTarget, Rest, CompletedPath());
+
 			_stateMachine.AddAnyTransition(Search, HasNoTarget());
-			// 	_stateMachine.AddAnyTransition(flee, () => enemyDetector.EnemyInRange);
-			// 	At(flee, search, () => enemyDetector.EnemyInRange == false);
-			// 	At(search, flee, HasTarget());
 
 			_stateMachine.SetState(Search);
 
@@ -50,12 +46,32 @@ namespace Lily.Ai
 			Func<bool> HasNoTarget() => () => target == null;
 			Func<bool> HasPath() => () => currentPath != null;
 			Func<bool> HasNoPath() => () => currentPath == null;
+			Func<bool> CompletedPath() => () => PathComplete == true;
 
+			planner.StartPlanner(this);
 		}
 
 		private void Update() 
 		{
 			_stateMachine.Tick();
+			planner.CheckProgress();		
+		}
+		void OnCollisionEnter(Collision collide)
+		{
+			if (collide.gameObject.tag == "Predator")
+			{
+				Die();
+			}
+		}
+		void OnCollisionExit(Collision collide)
+		{
+
+		}
+		void Die()
+		{
+			int lifetime = 3;
+			deathEffect.Play();
+			Destroy(this, lifetime);
 		}
 	}
 }

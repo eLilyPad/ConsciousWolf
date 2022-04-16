@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.VFX;
 
 public class DestroyOnCollision : MonoBehaviour
 {
@@ -8,23 +9,29 @@ public class DestroyOnCollision : MonoBehaviour
 
     #endregion
     [SerializeField] private float timeBetweenDestroy = 0.5f;
+		[SerializeField] private VisualEffect deathEffect;
 
-	void OnCollisionEnter(Collision collide)
+	void OnCollisionEnter(Collision collider)
 	{
-		Debug.Log("DestroyCollider");
-		StartCoroutine(DestroyCollider(collide.gameObject));
+		DestroyCollided(collider.gameObject);
 	}
-	void OnCollisionExit(Collision collide)
+	void OnCollisionExit(Collision collider)
 	{
 
 	}
 
-	IEnumerator DestroyCollider(GameObject collider)
+	void DestroyCollided(GameObject collider)
 	{
-		if (collider.gameObject.tag == collisionType)
+		if (collider.gameObject.tag == "Predator")
 		{
-			Destroy(collider);
-			yield return new WaitForSeconds(timeBetweenDestroy);
+			Debug.Log("ded");
+			deathEffect.Play();
+			Destroy(this.gameObject);
+			
 		}
+	}
+	void OnDestroy()
+	{
+
 	}
 }

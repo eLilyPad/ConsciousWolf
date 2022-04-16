@@ -14,8 +14,6 @@ namespace Lily.Ai.ActionStates
 		}
 		public void Tick()
 		{
-      Debug.Log("Resting...");
-
 			StopMoving();
     }
 
