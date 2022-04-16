@@ -8,15 +8,15 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Food
-  m_Shader: {fileID: 4800000, guid: 933532a4fcc9baf4fa0491de14d08ed7, type: 3}
+  m_Shader: {fileID: -6465566751694194690, guid: c3886ee49586c6140a5990b0a0398f66,
+    type: 3}
   m_ValidKeywords: []
   m_InvalidKeywords: []
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
-  m_CustomRenderQueue: 2000
-  stringTagMap:
-    RenderType: Opaque
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
   disabledShaderPasses: []
   m_SavedProperties:
     serializedVersion: 3
@@ -79,6 +79,11 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
+    - Angle_Offset: 2.4
+    - BlurLevel: 7.36
+    - Cell_Density: 3.81
+    - Noise_Scale: 15.7
+    - Simplify: 21.84
     - _AlphaClip: 0
     - _Blend: 0
     - _BumpScale: 1
@@ -97,6 +102,7 @@ Material:
     - _Mode: 0
     - _OcclusionStrength: 1
     - _Parallax: 0.02
+    - _QueueControl: 0
     - _QueueOffset: 0
     - _ReceiveShadows: 1
     - _Smoothness: 0.5
@@ -108,11 +114,29 @@ Material:
     - _WorkflowMode: 1
     - _ZWrite: 1
     m_Colors:
+    - Color_5f163e6ab0ec4240a18f7b5e18f7af0c: {r: 0.5377358, g: 0.41186443, b: 0.23673901,
+        a: 0}
+    - Color_ccc7025b87b64cc18066c9a56aaa0edd: {r: 0.9245283, g: 0.22604826, b: 0.058146313,
+        a: 0}
+    - Colour2: {r: 0.8584906, g: 0.19977449, b: 0.2746513, a: 0}
     - _BaseColor: {r: 0.45921868, g: 0.053221762, b: 0.8584906, a: 1}
     - _Color: {r: 0.4592187, g: 0.053221792, b: 0.8584906, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
   m_BuildTextureStacks: []
+--- !u!114 &6624482865934072274
+MonoBehaviour:
+  m_ObjectHideFlags: 11
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0353a89b1f911e48b9e16bdc9f2e058, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  version: 5
 --- !u!114 &2720776460166979500
 MonoBehaviour:
   m_ObjectHideFlags: 11

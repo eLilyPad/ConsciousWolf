@@ -15,32 +15,20 @@ namespace Lily
 
         bool isPlaying = false;
 
-        void Start()
+        public void PlayRandomSound()
         {
-            StartCoroutine(PlayRandomSound());
-        }
-        void Update()
-        {
-            if(Input.GetKeyDown(KeyCode.Space))
-            {
-                StartAudio(clipIndex);
-            }
+            StartCoroutine(RandomSound());
         }
 
-        IEnumerator PlayRandomSound()
+        IEnumerator RandomSound()
         {
-            
-            while(true)
+            int randomIndex = Random.Range(0, clip.Length);
+            if(!isPlaying)
             {
-                yield return new WaitForSeconds(Random.Range(1,10));
-
-                int randomIndex = Random.Range(0, clip.Length);
-
                 StartAudio(randomIndex);
-
-                yield return new WaitForSeconds(minTimeBetweenAudio);
-                StopAudio();
             }
+            yield return new WaitForSeconds(minTimeBetweenAudio);
+            StopAudio();
         }
 
         void StartAudio(int index)

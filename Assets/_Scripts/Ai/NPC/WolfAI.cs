@@ -10,38 +10,26 @@ namespace Lily.Ai
   public class WolfAI : BasicAI
   {
   #region [black] Parameters
-			
-		const float minPathUpdateTime = .2f;
-		const float pathUpdateMoveThreshold = .5f;
     private float sqrMoveThreshold = pathUpdateMoveThreshold * pathUpdateMoveThreshold;
-
-		PathPlanner planner;
-		Vector3 oldTargetPosition;
-
+		
 	#endregion
 
 		void Awake()
 		{
 			rb = GetComponent<Rigidbody>();
-			//planner.StartPlanner(this);
+			planner = GetComponent<PathPlanner>();
 
 			_stateMachine = new BasicStateMachine();//calls a new state machine
 			var Search = new FindClosestTargetWithTag(this, targetTag);
-			var FindPath = new FindPath(this);
 			var Rest = new Rest(this, rb);
-			var FollowPath = new FollowPath(this, currentPath, rb);
-			// var flee = new Flee(this, controller, enemyDetector);
-			// var chase = new Chase(this, controller, enemyDetector);
+			var MoveToTarget = new MoveToTarget(this, rb);
+			var Attack = new Attack(this, rb);
 
-			// At(Search, FindPath, HasTarget());
-			// At(FindPath, FollowPath, HasPath());
-			// At(FollowPath, FindPath, HasNoPath());
-			// At(FollowPath, FindPath, HasTargetMoved());
-			// At(FollowPath, FindPath, HasPathCompleted());
 			At(Search, Rest, HasTarget());
 			
-			At(Rest, FollowPath, HasPath());
-			At(FollowPath, Rest, HasNoPath());
+			At(Rest, MoveToTarget, HasPath());
+			At(MoveToTarget, Rest, HasNoPath());
+			At(MoveToTarget, Rest, CompletedPath());
 			
 
 			_stateMachine.AddAnyTransition(Search, HasNoTarget());
@@ -54,50 +42,23 @@ namespace Lily.Ai
 			Func<bool> HasNoTarget() => () => target == null;
 			Func<bool> HasNoPath() => () => currentPath == null;
 			Func<bool> HasPath() => () => currentPath != null;
+			Func<bool> CompletedPath() => () => PathComplete == true;
 
-			StartCoroutine(UpdatePath());
+			planner.StartPlanner(this);
 		}
 
 		private void Update() 
 		{
 			_stateMachine.Tick();
+			planner.CheckProgress();
+			InRange();
 		}
 
-  #region [blue] Pathfinding
+		void InRange()
+		{
+			float distanceFromTarget = Vector3.Distance(this.transform.position, target.position);
 
-    IEnumerator UpdatePath()
-    {
-      if (Time.timeSinceLevelLoad < .3f)
-      {
-        yield return new WaitForSeconds(.3f);
-      }
-      PathRequestManager.RequestPath(new PathRequest(transform.position, target.position, OnPathFound));
-
-      float sqrMoveThreshold = pathUpdateMoveThreshold * pathUpdateMoveThreshold;
-      Vector3 targetPosOld = target.position;
-
-      while (true)
-      {
-        yield return new WaitForSeconds(minPathUpdateTime);
-        //print(((target.position - targetPosOld).sqrMagnitude) + "    " + sqrMoveThreshold);
-        if ((target.position - targetPosOld).sqrMagnitude > sqrMoveThreshold)
-        {
-          PathRequestManager.RequestPath(new PathRequest(transform.position, target.position, OnPathFound));
-          targetPosOld = target.position;
-          newPathFound = true;
-        }
-      }
-    }
-    
-    public void OnPathFound(Vector3[] waypoints, bool pathSuccessful)
-    {
-      if (pathSuccessful)
-      {
-        currentPath = new Path(waypoints, transform.position, turnDst, stoppingDst);
-        newPathFound = false;
-        //Restart the path
-      }
-    }
-  #endregion
+			if (distanceFromTarget <= AttackRange) audioManager.PlayRandomSound();
+		}
   }
 }

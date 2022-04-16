@@ -8,20 +8,23 @@ namespace Lily.Ai
 	using StateMachine;
 	using Pathfinder;
 	using MovementSystem.Controller;
+  using UnityEngine.VFX;
 
   public class BasicAI : MonoBehaviour
 	{
 		#region Variables
 			
 			#region Pathfinding Constants
-				const float minPathUpdateTime = .2f;
-				const float pathUpdateMoveThreshold = .5f;
+				protected const float minPathUpdateTime = .2f;
+				protected const float pathUpdateMoveThreshold = .5f;
 				
 			#endregion
 			protected BasicStateMachine _stateMachine;
 			public MovementController mc;
 			public Rigidbody rb;
 			public Transform target;
+
+			public Vector3 waypoint;
 			public string targetTag;
 
     	public float maxSpeed = 20;
@@ -31,12 +34,28 @@ namespace Lily.Ai
 			public float turnPenalty = 1;
   		public float stoppingDst = 10;
 			public Path currentPath;
-			public bool PathComplete;
+			public int pathIndex;
+			public bool PathComplete = false;
 			public bool targetMoved;
+			public bool AtWayPoint = false;
+			public float AttackRange = 3;
+
+			public bool drawGizmos = false;
 
 			public float turnThreshold = 10f;
 
-			public bool newPathFound;
+			public PathPlanner planner;
+
+			public AudioManager audioManager;
+
+			public VisualEffect deathEffect;
+
+			private bool _isAlive = true;
+			public bool IsAlive   // property
+			{
+				get { return _isAlive; }   // get method
+				set { _isAlive = value; }  // set method
+			}
 
 		#endregion
 
@@ -45,5 +64,16 @@ namespace Lily.Ai
 
 		private void Update() 
 		{}
+
+		public void OnDrawGizmos() 
+		{
+			if (drawGizmos)
+			{
+				if (currentPath != null) 
+				{
+					currentPath.DrawWithGizmos ();
+				}
+			}
+		}
 	}
 }
