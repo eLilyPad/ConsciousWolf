@@ -19,8 +19,6 @@ namespace Lily.Ai.Pathfinder
 
     protected BasicStateMachine _stateMachine;
 
-    public Vector3 targetPosition;
-
     int finishLineIndex;
 
   #endregion
