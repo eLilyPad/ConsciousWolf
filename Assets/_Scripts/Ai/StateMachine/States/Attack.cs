@@ -28,5 +28,10 @@ namespace Lily.Ai.ActionStates
       // ai.audioManager.PlayRandomSound();
     }
 		public void OnExit() { }
+
+		void AttackTarget()
+		{ 
+			ai.manager.Kill(ai.AttackTarget);
+		}
 	}
 }

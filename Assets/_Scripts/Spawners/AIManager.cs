@@ -5,80 +5,135 @@ using UnityEngine;
 
 public class AIManager : MonoBehaviour
 {
-    #region Variables
-        public GameObject spawn;
-        public int spawnCount;
-        public int spawnCapacity;
-        public float minTimeBetweenSpawn;
-        public float maxTimeBetweenSpawn;
-        public GameObject[] respawns;
+	#region Variables
+		[SerializeField] GameObject spawn;
+		int spawnCount;
+		[SerializeField] int spawnCapacity;
+		[SerializeField] float minTimeBetweenSpawn;
+		[SerializeField] float maxTimeBetweenSpawn;
+		[SerializeField] List<GameObject> spawnLocations = new List<GameObject>();
+		private List<GameObject> Spawns = new List<GameObject>();
+		private float timeBetweenSpawn;
+		int oldSpawnIndex;
 
-        [SerializeField]
-        private Transform[] spawnLocations;
-        private float timeBetweenSpawn;
+	#endregion
 
-    #endregion
-
-
-	void Start()
-	{
-	} 
-	void Update()
-	{
-		
-		respawns = GameObject.FindGameObjectsWithTag(spawn.tag);
-		spawnCount = respawns.Length;
-		if(spawn.tag.Equals("Pray"))
-		{
-			CheckIsAlive();
-		}
-		if (spawnCount <= spawnCapacity)
+	#region Mono Methods
+		void Start()
 		{
 			Spawn();
+			Spawns.Add(GameObject.FindGameObjectWithTag(spawn.tag));
+		} 
+		void Update()
+		{
+			GetSpawnCount();
 		}
+
+
+		
+	#endregion
+
+	#region AI Checks
+
+	int GetSpawnCount()
+	{
+		spawnCount = Spawns.Count;
+		return spawnCount;
+	}
+
+	bool CanSpawn()
+	{
+		if (GetSpawnCount() <= spawnCapacity) return true;
+
+		return false;
+	}
+	
+	#endregion
+
+	#region Spawn Methods
+	void ListSpawn(GameObject spawn)
+	{ 
+		Spawns.Add(spawn);
+	}
+	
+	void RemoveSpawn(GameObject spawn)
+	{ 
+		Spawns.Remove(spawn);
 	}
 
 	public void Spawn()
-	{
-		StartCoroutine(SpawnDrop());
+	{		
+		if (CanSpawn())
+		{
+			StartCoroutine(SpawnDrop());
+		}
 	}
 
+	int GetMaxSpawnLocationIndex()
+	{
+		return spawnLocations.Count;
+	}
+	int GetRandomSpawnIndex()
+	{	
+		oldSpawnIndex = spawnLocations.Count + 1;
+    int randomSpawnIndex = Random.Range(0, spawnLocations.Count);
+		if (randomSpawnIndex == oldSpawnIndex)
+    {
+      randomSpawnIndex = Random.Range(0, spawnLocations.Count);
+    }
+		oldSpawnIndex = randomSpawnIndex;
+		return randomSpawnIndex;
+	}
 	IEnumerator SpawnDrop()
 	{
-    int oldSpawnIndex = spawnLocations.Length + 1;
-    int spawnIndex = Random.Range(0, spawnLocations.Length);
-    if (spawnIndex == oldSpawnIndex)
-    {
-      spawnIndex = Random.Range(0, spawnLocations.Length);
-    }
-		Transform spawnPos = spawnLocations[spawnIndex];
+		Transform spawnPos = spawnLocations[GetRandomSpawnIndex()].transform;
 
 		timeBetweenSpawn = Random.Range(minTimeBetweenSpawn, maxTimeBetweenSpawn);
 		if (spawnCount <= spawnCapacity)
 		{
 			Instantiate(spawn, spawnPos.position, Quaternion.identity);
-      oldSpawnIndex = spawnIndex;
+			ListSpawn(spawn);
 			yield return new WaitForSeconds(timeBetweenSpawn);
 			StartCoroutine(SpawnDrop());
 		}
 
 	}
-
-	void CheckIsAlive()
+	
+	public void NewLocation()
 	{
-		foreach(GameObject spawn in respawns)
-		{
-			var AI = spawn.GetComponent<BasicAI>();
-			if(!AI.IsAlive)
-			{
-				StartCoroutine(Destroy(spawn));
-			}
-		}
+		int newSpawnLocationIndex = GetMaxSpawnLocationIndex();
+		
+		spawnLocations.Add(NewSpawnLocation(newSpawnLocationIndex));
 	}
 
-	IEnumerator Destroy(GameObject deadObject)
-	{
-		yield return new WaitForSeconds(3);
-		Destroy(deadObject);
+	GameObject NewSpawnLocation(int spawnIndex)
+	{	
+		GameObject NewSpawn = new GameObject("Spawn Location " + spawnIndex);
+		NewSpawn.transform.SetParent(transform);
+		return NewSpawn;
 	}
+  public void Kill(GameObject spawn)
+	{
+		RemoveSpawn(spawn);
+		Destroy(spawn);
+	}
+	#endregion
+	// void CheckIsAlive()
+	// {
+	// 	foreach(GameObject spawn in Spawns)
+	// 	{
+	// 		var AI = spawn.GetComponent<BasicAI>();
+	// 		if(!AI.IsAlive)
+	// 		{
+	// 			StartCoroutine(Destroy(spawn));
+	// 		}
+	// 	}
+	// }
+
+	// IEnumerator Destroy(GameObject deadObject)
+	// {
+	// 	yield return new WaitForSeconds(3);
+	// 	Destroy(deadObject);
+	// }
+
 }

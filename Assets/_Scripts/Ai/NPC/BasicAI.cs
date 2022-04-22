@@ -21,9 +21,11 @@ namespace Lily.Ai
 			#endregion
 			protected BasicStateMachine _stateMachine;
 			public MovementController mc;
+			
+			public AIManager manager;
 			public Rigidbody rb;
 			public Transform Target;
-
+			public GameObject AttackTarget;
 			public Vector3 waypoint;
 			public string targetTag;
 
