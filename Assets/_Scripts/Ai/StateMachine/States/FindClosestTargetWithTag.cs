@@ -14,31 +14,24 @@ namespace Lily.Ai.ActionStates
 		}
 		public void Tick()
 		{
-			ai.Target = TheNearestWithTag().transform;
-			ai.AttackTarget = TheNearestWithTag();
+			// if(ai.manager.HasSpawn())
+			// {
+			// 	GetTarget();
+			// }
+			while (ai.Target == null) GetTarget();
 		}
 
-		private GameObject TheNearestWithTag()
+		void GetTarget()
 		{
-			GameObject[] targets = GameObject.FindGameObjectsWithTag(targetTag);
-			float closestDistance = Mathf.Infinity;
-			GameObject target = null;
-
-			foreach (GameObject t in targets)
-			{
-				target = t;
-				float distanceFromTarget = Vector3.Distance(ai.transform.position, target.transform.position);
-				if (distanceFromTarget < closestDistance)
-				{
-					closestDistance = distanceFromTarget;
-					//ai.oldTarget = TheNearestWithTag().name;
-					return target;
-				}
-			}
-
-			return target;
+			//ai.Target = ClosestTarget().transform;
+			ai.AttackTarget = ClosestTarget();
+			//ai.Target = ai.AttackTarget.transform;
 		}
-		public void OnEnter() { }
-		public void OnExit() { }
+		private GameObject ClosestTarget()
+		{
+			return ai.manager.GetClosestTarget(ai.transform.position);
+		}
+		public void OnEnter() {}
+		public void OnExit() {}
 	}
 }

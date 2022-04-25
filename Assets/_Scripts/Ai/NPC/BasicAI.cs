@@ -40,6 +40,7 @@ namespace Lily.Ai
 			public bool PathComplete = false;
 			public bool targetMoved;
 			public bool AtWayPoint = false;
+			public bool CanAttack = false;
 			public float AttackRange = 3;
 
 			public bool drawGizmos = false;

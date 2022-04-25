@@ -52,7 +52,7 @@ namespace Lily.Ai
 			_stateMachine.Tick();
 			planner.CheckProgress();
 			
-			if (Target != null)CheckAttackRange();
+			if (Target != null)CanAttack = CheckAttackRange();
 		}
  
 		bool CheckAttackRange()

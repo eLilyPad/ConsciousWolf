@@ -190,7 +190,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 97a92928ec380704293eb3925fc70b20, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  manager: {fileID: 863871541308845696, guid: b8f1eec48bac6c448afd246055f10adb, type: 3}
   rb: {fileID: 6114137984952116211}
+  Target: {fileID: 0}
+  AttackTarget: {fileID: 0}
   waypoint: {x: 0, y: 0, z: 0}
   targetTag: Food
   maxSpeed: 20
@@ -203,6 +206,7 @@ MonoBehaviour:
   PathComplete: 0
   targetMoved: 0
   AtWayPoint: 0
+  CanAttack: 0
   AttackRange: 2
   drawGizmos: 0
   turnThreshold: 10
@@ -241,7 +245,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b3c2b4fc721b68e42bd08e9b4706b324, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetPosition: {x: 0, y: 0, z: 0}
 --- !u!1001 &6528546093426315957
 PrefabInstance:
   m_ObjectHideFlags: 0

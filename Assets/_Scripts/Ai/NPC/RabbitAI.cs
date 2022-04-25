@@ -38,7 +38,7 @@ namespace Lily.Ai
 
 			_stateMachine.AddAnyTransition(Search, HasNoTarget());
 
-			_stateMachine.SetState(Search);
+			_stateMachine.SetState(Rest);
 
 
 			void At(IState from, IState to, Func<bool> condition) => _stateMachine.AddTransition(from, to, condition);

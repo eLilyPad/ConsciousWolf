@@ -29,6 +29,10 @@ public class AIManager : MonoBehaviour
 			GetSpawnCount();
 		}
 
+		public bool HasSpawn()
+		{
+			return (Spawns.Count >= 1);
+		}
 
 		
 	#endregion
@@ -97,6 +101,24 @@ public class AIManager : MonoBehaviour
 			StartCoroutine(SpawnDrop());
 		}
 
+	}
+
+	public GameObject GetClosestTarget(Vector3 pos)
+	{
+		if(Spawns == null) return null;
+		float closestDistance = Mathf.Infinity;
+		GameObject target = null;
+
+		foreach (GameObject t in Spawns)
+		{
+			float distanceFromTarget = Vector3.Distance(pos, t.transform.position);
+			if (distanceFromTarget < closestDistance)
+			{
+				target = t;
+				closestDistance = distanceFromTarget;
+			}
+		}
+		return target;
 	}
 	
 	public void NewLocation()
