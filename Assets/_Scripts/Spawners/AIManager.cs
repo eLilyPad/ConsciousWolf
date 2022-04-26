@@ -57,6 +57,7 @@ public class AIManager : MonoBehaviour
 		if (spawnCount <= spawnCapacity)
 		{
 			Instantiate(spawn, spawnPos.position, Quaternion.identity);
+			// new GameObject = 
       oldSpawnIndex = spawnIndex;
 			yield return new WaitForSeconds(timeBetweenSpawn);
 			StartCoroutine(SpawnDrop());
@@ -81,4 +82,6 @@ public class AIManager : MonoBehaviour
 		yield return new WaitForSeconds(3);
 		Destroy(deadObject);
 	}
+
+	
 }

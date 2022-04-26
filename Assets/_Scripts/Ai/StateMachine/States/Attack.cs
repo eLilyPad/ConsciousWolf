@@ -22,6 +22,10 @@ namespace Lily.Ai.ActionStates
 		{
 			_rb.velocity = Vector3.zero;
 		}
+		void AttackMove()
+		{
+			ai.TakeDamage();
+		}
 		public void OnEnter()
     {
 			Debug.Log("Attacking "+ ai.name);

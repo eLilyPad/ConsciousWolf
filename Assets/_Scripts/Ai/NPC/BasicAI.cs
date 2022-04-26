@@ -1,23 +1,30 @@
-using System;
 using UnityEngine;
-using System.Collections;
-
+using UnityEngine.VFX;
 namespace Lily.Ai
 {
-	using ActionStates;
-	using StateMachine;
-	using Pathfinder;
-	using MovementSystem.Controller;
-  using UnityEngine.VFX;
+  using Lily;
+  using StateMachine;
+  using Pathfinder;
+  using MovementSystem.Controller;
 
-  public class BasicAI : MonoBehaviour
+  public abstract class BasicAI : MonoBehaviour
 	{
 		#region Variables
-			
+		
 			#region Pathfinding Constants
+
 				protected const float minPathUpdateTime = .2f;
 				protected const float pathUpdateMoveThreshold = .5f;
 				
+			#endregion
+			#region Health
+
+				// [SerializeField] protected int health;
+				public int Health= 1;
+				// {
+				// 	get 
+				// }
+
 			#endregion
 			protected BasicStateMachine _stateMachine;
 			public MovementController mc;

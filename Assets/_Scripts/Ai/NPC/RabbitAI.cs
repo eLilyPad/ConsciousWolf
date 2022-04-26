@@ -10,12 +10,13 @@ namespace Lily.Ai
 	using MovementSystem.Controller;
   using UnityEngine.VFX;
 
-  public class RabbitAI : BasicAI
+  public class RabbitAI : BasicAI, IDamagable
 	{
-		#region Variables
-		#endregion
+    
+    #region Variables
+    #endregion
 
-		void Awake()
+    void Awake()
 		{
 			deathEffect.Stop();
 			planner = GetComponent<PathPlanner>();
@@ -66,6 +67,12 @@ namespace Lily.Ai
       if (distanceFromTarget <= AttackRange) return true;
       return false;
       //audioManager.PlayRandomSound();
+    }
+	
+		public void TakeDamage(int damage)
+    {
+      Health -= damage;
+			if(Health <= 0)Destroy(gameObject);
     }
 	}
 }

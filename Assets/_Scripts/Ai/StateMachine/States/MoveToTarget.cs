@@ -35,8 +35,8 @@ namespace Lily.Ai.ActionStates
 	#region [red] Movement 
 		void LookAtWaypoint()
 		{
-			//_ai.transform.LookAt(_ai.waypoint);
-			RotateYToTarget(_ai.waypoint, _ai.turnSpeed, false);
+			_ai.transform.LookAt(_ai.waypoint);
+			//RotateYToTarget(_ai.waypoint, _ai.turnSpeed, false);
 		}
 		void MoveForward()
 		{

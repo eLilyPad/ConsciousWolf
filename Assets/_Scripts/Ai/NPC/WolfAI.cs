@@ -7,14 +7,14 @@ namespace Lily.Ai
   using ActionStates;
 	using StateMachine;
 	using Pathfinder;
-  public class WolfAI : BasicAI
+  public class WolfAI : BasicAI, IDamagable
   {
   #region [black] Parameters
     private float sqrMoveThreshold = pathUpdateMoveThreshold * pathUpdateMoveThreshold;
-		
-	#endregion
 
-		void Awake()
+    #endregion
+
+    void Awake()
 		{
 			rb = GetComponent<Rigidbody>();
 			planner = GetComponent<PathPlanner>();
@@ -62,6 +62,12 @@ namespace Lily.Ai
       if (distanceFromTarget <= AttackRange) return true;
       return false;
       //audioManager.PlayRandomSound();
+    }
+
+    public void TakeDamage(int damage)
+    {
+      Health -= damage;
+			if(Health <= 0)Destroy(gameObject);
     }
   }
 }
