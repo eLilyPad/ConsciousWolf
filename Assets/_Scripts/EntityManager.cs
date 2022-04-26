@@ -1,21 +1,44 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace Lily
 {
-    public class EntityManager : MonoBehaviour
-    {
-        // Start is called before the first frame update
-        void Start()
-        {
-        
-        }
+  public class EntityManager : MonoBehaviour
+  {
+    // #region Parameters
 
-        // Update is called once per frame
-        void Update()
-        {
-        
-        }
-    }
+    //   EntityData entityData;
+
+    //   #region Private Variables
+    //     int entityID;
+
+    //   #endregion
+
+    //   #region Entity Parameters
+    //     GameObject entityPrefab;
+
+    //     string entityName;
+
+    //   #endregion
+    // #endregion
+
+    // void Start()
+    // {
+    //   entityPrefab = entityData.prefab;
+
+    //   entityName = entityPrefab.name;
+    // }
+
+    // //create the entity
+    // void CreateEntity()
+    // {
+    //   // Instantiate(entityPrefab, spawnPos.position, Quaternion.identity);
+    // }
+    // //List Entity
+
+    // //delete the entity
+    // void DeleteEntity(int entityID)
+    // { 
+
+    // }
+  }
 }

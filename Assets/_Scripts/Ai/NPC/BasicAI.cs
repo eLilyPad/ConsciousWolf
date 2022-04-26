@@ -7,7 +7,7 @@ namespace Lily.Ai
   using Pathfinder;
   using MovementSystem.Controller;
 
-  public abstract class BasicAI : MonoBehaviour
+  public abstract class BasicAI : MonoBehaviour, IDamagable
 	{
 		#region Variables
 		
@@ -65,6 +65,8 @@ namespace Lily.Ai
 				set { _isAlive = value; } 
 			}
 
+			public AIManager AIManager;
+
 		#endregion
 
 		void Awake()
@@ -83,5 +85,10 @@ namespace Lily.Ai
 				}
 			}
 		}
+		public void TakeDamage(int damage)
+    {
+      Health -= damage;
+			if(Health <= 0)Destroy(gameObject);
+    }
 	}
 }

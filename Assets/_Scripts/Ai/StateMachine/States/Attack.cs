@@ -24,7 +24,22 @@ namespace Lily.Ai.ActionStates
 		}
 		void AttackMove()
 		{
-			ai.TakeDamage();
+			int layerMask = 0;
+			ai.TakeDamage(1);
+			RaycastHit hit;
+			if (Physics.Raycast(ai.transform.position, ai.Target.position, out hit, Mathf.Infinity, layerMask))
+			{
+				Debug.DrawRay(ai.transform.position, ai.Target.position * hit.distance, Color.yellow);
+				Debug.Log("Did Hit");
+				
+				if(hit.collider.gameObject == null) 
+				{
+					Debug.Log("Miss Hit: gameObject = null"); 
+					return;
+				}
+				BasicAI hitAi = hit.collider.gameObject.GetComponent<BasicAI>();
+				hitAi.AIManager.SetActive(hitAi.GetInstanceID());
+			}
 		}
 		public void OnEnter()
     {

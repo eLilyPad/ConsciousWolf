@@ -7,7 +7,7 @@ namespace Lily.Ai
   using ActionStates;
 	using StateMachine;
 	using Pathfinder;
-  public class WolfAI : BasicAI, IDamagable
+  public class WolfAI : BasicAI
   {
   #region [black] Parameters
     private float sqrMoveThreshold = pathUpdateMoveThreshold * pathUpdateMoveThreshold;
@@ -64,10 +64,5 @@ namespace Lily.Ai
       //audioManager.PlayRandomSound();
     }
 
-    public void TakeDamage(int damage)
-    {
-      Health -= damage;
-			if(Health <= 0)Destroy(gameObject);
-    }
   }
 }
