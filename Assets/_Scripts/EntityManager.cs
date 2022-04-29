@@ -7,10 +7,11 @@ namespace Lily
   public class EntityManager : MonoBehaviour
   {
     #region Parameters
-      [SerializeField] protected Dictionary<int, GameObject> entityList = new Dictionary<int, GameObject>();
+      protected Dictionary<int, GameObject> entityList = new Dictionary<int, GameObject>();
+      [SerializeField] protected List<GameObject> spawnedEntities = new List<GameObject>();
       [SerializeField] protected List<GameObject> spawnableEntities = new List<GameObject>();
 
-      [SerializeField] public GameObject prefab;
+      protected GameObject prefab;
       [SerializeField] public EntityData entityData;
 
       protected static int _ID = 0;
@@ -27,10 +28,16 @@ namespace Lily
 
     #endregion
 
+      public EntityManager entityManager;
+      public void Init(EntityData eData)
+      {
+        entityData = eData;
+      }
     #region [black] Mono Methods
       void Start()
       {
         name = entityData.name;
+        prefab = entityData.prefab;
       }
       void Update()
       {
@@ -60,6 +67,16 @@ namespace Lily
           if (!AtSpawnCap()) Spawn();
           if (IsSpawnable()) Respawn();
         }
+      }
+      public List<GameObject> SpawnList(EntityData data)
+      {
+        entityData = data;
+        for(int i = 0; i < spawnCapacity; i ++)
+        {
+          spawnedEntities.Add(CreateEntity());
+        }
+
+        return spawnedEntities;
       }
       protected GameObject CreateEntity()
       {
@@ -118,7 +135,9 @@ namespace Lily
       public void AddToList(int ID, GameObject spawn)
       {
         // entityList.Add(ID, spawn);
-        if (!entityList.TryAdd(ID, spawn)) Debug.Log("Entity not added to list: " + ID);;
+        if (!entityList.TryAdd(ID, spawn)) Debug.Log("Entity not added to list: " + ID);
+
+        
       }
       public GameObject GetEntityFromList(int entityID)
       {
@@ -131,7 +150,7 @@ namespace Lily
 
       public int GetSpawnableID()
       {
-        spawnableEntities[0].TryGetComponent<Entity>(out Entity entity);
+        if (!spawnableEntities[0].TryGetComponent<Entity>(out Entity entity)) Debug.Log("Entity Component not found: " + entity);
 
         return entity.entityID;
       }
