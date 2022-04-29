@@ -7,8 +7,8 @@ namespace Lily.Ai
   using Pathfinder;
   using MovementSystem.Controller;
 
-  public abstract class BasicAI : MonoBehaviour, IDamagable
-	{
+  public class BasicAI : Entity, IDamagable
+		{
 		#region Variables
 		
 			#region Pathfinding Constants
@@ -28,7 +28,7 @@ namespace Lily.Ai
 			#endregion
 			protected BasicStateMachine _stateMachine;
 			public MovementController mc;
-			public Rigidbody rb;
+			
 			public Transform Target;
 
 			public Vector3 waypoint;
@@ -65,7 +65,9 @@ namespace Lily.Ai
 				set { _isAlive = value; } 
 			}
 
-			public AIManager AIManager;
+			// public AIManager AIManager;
+
+			public GameObject TargetObj;
 
 		#endregion
 

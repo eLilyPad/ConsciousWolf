@@ -14,8 +14,8 @@ namespace Lily.Ai.ActionStates
 		}
 		public void Tick()
 		{
-
 			StopMoving();
+			AttackMove();
     }
 
 		void StopMoving()
@@ -24,27 +24,15 @@ namespace Lily.Ai.ActionStates
 		}
 		void AttackMove()
 		{
-			int layerMask = 0;
-			ai.TakeDamage(1);
-			RaycastHit hit;
-			if (Physics.Raycast(ai.transform.position, ai.Target.position, out hit, Mathf.Infinity, layerMask))
-			{
-				Debug.DrawRay(ai.transform.position, ai.Target.position * hit.distance, Color.yellow);
-				Debug.Log("Did Hit");
-				
-				if(hit.collider.gameObject == null) 
-				{
-					Debug.Log("Miss Hit: gameObject = null"); 
-					return;
-				}
-				BasicAI hitAi = hit.collider.gameObject.GetComponent<BasicAI>();
-				hitAi.AIManager.SetActive(hitAi.GetInstanceID());
-			}
+			ai.TargetObj.TryGetComponent<Entity>(out Entity e);
+
+			int ID = e.entityID;
+			// Debug.Log("Attack " + e.Name);
+			e.EntityManager.InstaKill(ID);
 		}
 		public void OnEnter()
     {
-			Debug.Log("Attacking "+ ai.name);
-      // ai.audioManager.PlayRandomSound();
+			
     }
 		public void OnExit() { }
 	}

@@ -37,10 +37,10 @@ namespace Lily.Ai.Pathfinder
 
     IEnumerator UpdatePath()
     {
-      if (Time.timeSinceLevelLoad < .3f || _ai.Target == null)
-      {
-        yield return new WaitForSeconds(.3f);
-      }
+      if (Time.timeSinceLevelLoad < .3f) yield return new WaitForSeconds(minPathUpdateTime);
+
+      while (_ai.Target == null) yield return new WaitForSeconds(minPathUpdateTime);
+      
       PathRequestManager.RequestPath(new PathRequest(transform.position, _ai.Target.position, OnPathFound));
 
       float sqrMoveThreshold = pathUpdateMoveThreshold * pathUpdateMoveThreshold;
@@ -48,10 +48,8 @@ namespace Lily.Ai.Pathfinder
 
       while (true)
       {
-        if (_ai.Target == null)
-        {
-          yield return new WaitForSeconds(minPathUpdateTime);
-        }
+        if (_ai.Target == null)yield return new WaitForSeconds(minPathUpdateTime);
+
         else
         {
           yield return new WaitForSeconds(minPathUpdateTime);

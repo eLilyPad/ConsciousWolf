@@ -5,167 +5,98 @@ using UnityEngine;
 
 namespace Lily
 {
-  public class AIManager : MonoBehaviour
+  public class AIManager : EntityManager
   {
-    #region Parameters
-
-		[Header("Entity Data")]
-    public Dictionary<int, NPC> npcList = new Dictionary<int, NPC>();
-
-    public List<NPC> spawnableNPCs = new List<NPC>();
-    public GameObject entity;
-
-    EntityData entityData;
-
-    private static int _ID = 0;
-    public int ID;
-
-    string name;
-
-    #region Spawn Settings
-    [SerializeField] int spawnCount;
-    [SerializeField] int spawnCapacity;
-    [SerializeField] float minTimeBetweenSpawn;
-    [SerializeField] float maxTimeBetweenSpawn;
-    [SerializeField] Transform[] spawnLocations;
-    [SerializeField] float timeBetweenSpawn;
-
-    #endregion
-
-    #endregion
-
-    void Start()
-    {
-      name = entityData.name;
-    }
-    void Update()
-    {
-      // respawns = GameObject.FindGameObjectsWithTag(spawn.tag);
-      // spawnCount = respawns.Length;
-      // if(spawn.tag.Equals("Pray"))
-      // {
-      // 	CheckIsAlive();
-      // }
-      // if (spawnCount <= spawnCapacity)
-      // {
-      // 	Spawn();
-      // }
-    }
-
-    public void Spawn()
-    {
-      StartCoroutine(SpawnDrop());
-    }
-
-    IEnumerator SpawnDrop()
-    {
-      if (CheckSpawnCap()) yield break;
-
-      timeBetweenSpawn = Random.Range(minTimeBetweenSpawn, maxTimeBetweenSpawn);
-
-      CreateEntity();
-
-      // Instantiate(entity, GetSpawnPosition(), Quaternion.identity);
-      // new GameObject = 
-
-      yield return new WaitForSeconds(timeBetweenSpawn);
-
-      if (!AtSpawnCap()) Spawn();
-			if (IsSpawnable()) Respawn();
-    }
-
-		public void Respawn()
-    {
-      StartCoroutine(RespawnEntityRoutine());
-    }
-
-    IEnumerator RespawnEntityRoutine()
-    {
-
-      timeBetweenSpawn = Random.Range(minTimeBetweenSpawn, maxTimeBetweenSpawn);
-
-      RespawnEntity();
-
-      // Instantiate(entity, GetSpawnPosition(), Quaternion.identity);
-      // new GameObject = 
-
-      yield return new WaitForSeconds(timeBetweenSpawn);
-
-			if (IsSpawnable()) Respawn();
-    }
-
-		void RespawnEntity()
-		{
-			int RespawnID = spawnableNPCs[0].entityID;
-
-			npcList[RespawnID].prefab.transform.position = GetSpawnPosition();
-
-			SetActive(RespawnID);
-		}
-    //creates entity and changes some properties
-    void CreateEntity()
-    {
-      ID = _ID;
-
-      NPC npc = new NPC();
-
-      entity.TryGetComponent<BasicAI>(out BasicAI ai);
-
-      ai.AIManager = this;
-
-      // spawns a game object with entity
-      npc.prefab = Instantiate(entity, GetSpawnPosition(), Quaternion.identity);
-      npc.prefab.transform.parent = this.transform;
-      npc.entityID = ai.GetInstanceID();
-      npc.Name = name;
-
-      npcList.Add(npc.entityID, npc);
-    }
-
-    public NPC GetEntityFromList(int entityID)
-    {
-      return npcList[entityID];
-    }
-
-    public void SetActive(int entityID, bool active = true)
-    {
-      GetEntityFromList(entityID).prefab.SetActive(active);
-    }
-
-    public void KillEntity(int entityID)
-    {
-      SetActive(entityID, false);
-
-      spawnableNPCs.Add(GetEntityFromList(entityID));
-    }
-
-    Vector3 GetSpawnPosition()
-    {
-      int oldSpawnIndex = spawnLocations.Length;
-      int spawnIndex = Random.Range(0, spawnLocations.Length);
-      if (spawnIndex == oldSpawnIndex)
+    #region [black] Mono Methods
+      void Start()
       {
-        spawnIndex = Random.Range(0, spawnLocations.Length);
+        name = entityData.name;
       }
-      return spawnLocations[spawnIndex].position;
-    }
+      void Update()
+      {
+        // respawns = GameObject.FindGameObjectsWithTag(spawn.tag);
+        // spawnCount = respawns.Length;
+        // if(spawn.tag.Equals("Pray"))
+        // {
+        // 	CheckIsAlive();
+        // }
+        if (!AtSpawnCap())
+        {
+          Spawn();
+        }
+      }
+    #endregion
 
-    bool AtSpawnCap()
-    {
-      return spawnCount <= spawnCapacity;
-    }
-    bool IsSpawnable()
-    {
-      return spawnableNPCs.Count > 0;
-    }
+    #region [blue] Spawn
+      protected new void Spawn()
+      {
+        StartCoroutine(SpawnRoutine());
 
-  }
-  public class NPC
-  {
-    public int entityID;
+        IEnumerator SpawnRoutine()
+        {
+          // Debug.Log("AtSpawnCap: " + AtSpawnCap());
+          if (AtSpawnCap()) yield break;
 
-    public string Name;
+          timeBetweenSpawn = Random.Range(minTimeBetweenSpawn, maxTimeBetweenSpawn);
 
-    public GameObject prefab;
+          GameObject spawn = CreateNPC();
+
+          yield return new WaitForSeconds(timeBetweenSpawn);
+
+          if (!AtSpawnCap()) Spawn();
+          if (IsSpawnable()) Respawn();
+        }
+      }
+      GameObject CreateNPC()
+      {
+        ID = _ID++;
+        
+        GameObject spawn = (GameObject)Instantiate(prefab, GetSpawnPosition(), Quaternion.identity);
+        spawn.transform.parent = this.transform;
+
+        prefab.TryGetComponent<BasicAI>(out BasicAI ai);
+
+        // ai.AIManager = this;
+        ai.EntityManager = this;
+        ai.entityID = ID;
+        ai.Name = name;
+
+        AddToList(ai.entityID, spawn);
+
+        return spawn;
+      }
+    #endregion
+
+    #region [red] Respawn
+    // public void Respawn()
+    // {
+    //   StartCoroutine(RespawnEntityRoutine());
+    //   IEnumerator RespawnEntityRoutine()
+    //   {
+    //     timeBetweenSpawn = Random.Range(minTimeBetweenSpawn, maxTimeBetweenSpawn);
+
+    //     RespawnEntity();
+
+    //     // Instantiate(entity, GetSpawnPosition(), Quaternion.identity);
+    //     // new GameObject = 
+
+    //     yield return new WaitForSeconds(timeBetweenSpawn);
+
+    //     if (IsSpawnable()) Respawn();
+    //   }
+    // }
+    // void RespawnEntity()
+    // {
+    //   int RespawnID = GetSpawnableID();
+
+    //   entityList[RespawnID].transform.position = GetSpawnPosition();
+
+    //   SetActive(RespawnID);
+
+    //   spawnableEntities.RemoveAt(0);
+    // }
+    // creates entity and changes some properties
+
+    #endregion
   }
 }
