@@ -92,5 +92,12 @@ namespace Lily.Ai
       Health -= damage;
 			if(Health <= 0)Destroy(gameObject);
     }
+		public void OnDeath()
+		{
+			if(GameManager.TryRegisterDeath(this.gameObject)) Destroy(this.gameObject);
+			
+			else Debug.Log("Failed to register death: " + this.gameObject.ToString());
+
+		}
 	}
 }

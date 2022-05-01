@@ -6,38 +6,55 @@ namespace Lily
 {
   public class GameManager : MonoBehaviour
   {
-    [SerializeField] protected List<GameObject> spawnedEntities = new List<GameObject>();
-    [SerializeField] protected List<GameObject> spawnableEntities = new List<GameObject>();
+    [SerializeField] public List<GameObject> totalSpawnedEntities = new List<GameObject>();
+    // [SerializeField] protected List<GameObject> activeEntities = new List<GameObject>();
 
     [SerializeField] public EntityData[] entityDataList;
 
-    EntityManager entityManager;
+    List<EntityManager> entityManagers = new List<EntityManager>();
+    void Awake()
+    {
+      foreach(EntityData data in entityDataList) entityManagers.Add(InitializeManager(data));
+    }
+
     void Start()
     {
-      foreach (EntityData data in entityDataList)
-      {
-        spawnedEntities.AddRange(entityManager.SpawnList(data));
-      }
+      StartAllSpawners();
     }
-    void Update()
+    EntityManager InitializeManager(EntityData data)
+    { 
+      string managerName = data.name + " Spawner";
+      GameObject spawner = new GameObject(managerName);
+      
+      spawner.AddComponent<EntityManager>().Initialize(data, this);
+      spawner.transform.parent = this.transform;
+      
+      return spawner.GetComponent<EntityManager>();
+    }
+    public bool TryRegisterDeath(GameObject entity)
     {
-      foreach (EntityData Data in entityDataList)
+      if (totalSpawnedEntities.Contains(entity)) 
       {
-
+        totalSpawnedEntities.Remove(entity);
+        entity.GetComponent<EntityManager>().TryRegisterDeath(entity);
+        return true;
       }
+      return false;
     }
 
-    public void InstaKill(int entityID)
+    public void KillAll()
+    {
+      foreach(GameObject entity in totalSpawnedEntities)
       {
-        SetActive(entityID, false);
-
-        spawnableEntities.Add(GetEntityFromList(entityID));
+        if (TryRegisterDeath(entity)) Destroy(entity); 
       }
-      public void SetActive(int entityID, bool active = true)
+    }
+    void StartAllSpawners()
+    {
+      foreach(EntityManager manager in entityManagers)
       {
-        var entity = GetEntityFromList(entityID);
-        
-        entity.SetActive(active);
+        manager.StartSpawner();
       }
+    }
   }
 }

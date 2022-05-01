@@ -7,96 +7,96 @@ namespace Lily
 {
   public class AIManager : EntityManager
   {
-    #region [black] Mono Methods
-      void Start()
-      {
-        name = entityData.name;
-      }
-      void Update()
-      {
-        // respawns = GameObject.FindGameObjectsWithTag(spawn.tag);
-        // spawnCount = respawns.Length;
-        // if(spawn.tag.Equals("Pray"))
-        // {
-        // 	CheckIsAlive();
-        // }
-        if (!AtSpawnCap())
-        {
-          Spawn();
-        }
-      }
-    #endregion
 
-    #region [blue] Spawn
-      protected new void Spawn()
-      {
-        StartCoroutine(SpawnRoutine());
-
-        IEnumerator SpawnRoutine()
-        {
-          // Debug.Log("AtSpawnCap: " + AtSpawnCap());
-          if (AtSpawnCap()) yield break;
-
-          timeBetweenSpawn = Random.Range(minTimeBetweenSpawn, maxTimeBetweenSpawn);
-
-          GameObject spawn = CreateNPC();
-
-          yield return new WaitForSeconds(timeBetweenSpawn);
-
-          if (!AtSpawnCap()) Spawn();
-          if (IsSpawnable()) Respawn();
-        }
-      }
-      GameObject CreateNPC()
-      {
-        ID = _ID++;
-        
-        GameObject spawn = (GameObject)Instantiate(prefab, GetSpawnPosition(), Quaternion.identity);
-        spawn.transform.parent = this.transform;
-
-        prefab.TryGetComponent<BasicAI>(out BasicAI ai);
-
-        // ai.AIManager = this;
-        ai.EntityManager = this;
-        ai.entityID = ID;
-        ai.Name = name;
-
-        AddToList(ai.entityID, spawn);
-
-        return spawn;
-      }
-    #endregion
-
-    #region [red] Respawn
-    // public void Respawn()
-    // {
-    //   StartCoroutine(RespawnEntityRoutine());
-    //   IEnumerator RespawnEntityRoutine()
+    // #region [black] Mono Methods
+    // void Start()
     //   {
-    //     timeBetweenSpawn = Random.Range(minTimeBetweenSpawn, maxTimeBetweenSpawn);
-
-    //     RespawnEntity();
-
-    //     // Instantiate(entity, GetSpawnPosition(), Quaternion.identity);
-    //     // new GameObject = 
-
-    //     yield return new WaitForSeconds(timeBetweenSpawn);
-
-    //     if (IsSpawnable()) Respawn();
+    //     name = entityData.name;
     //   }
-    // }
-    // void RespawnEntity()
-    // {
-    //   int RespawnID = GetSpawnableID();
+    //   void Update()
+    //   {
+    //     // respawns = GameObject.FindGameObjectsWithTag(spawn.tag);
+    //     // spawnCount = respawns.Length;
+    //     // if(spawn.tag.Equals("Pray"))
+    //     // {
+    //     // 	CheckIsAlive();
+    //     // }
+    //     if (!AtSpawnCap())
+    //     {
+    //       Spawn();
+    //     }
+    //   }
+    // #endregion
 
-    //   entityList[RespawnID].transform.position = GetSpawnPosition();
+    // #region [blue] Spawn
+    //   protected void Spawn()
+    //   {
+    //     StartCoroutine(SpawnRoutine());
 
-    //   SetActive(RespawnID);
+    //     IEnumerator SpawnRoutine()
+    //     {
+    //       // Debug.Log("AtSpawnCap: " + AtSpawnCap());
+    //       if (AtSpawnCap()) yield break;
 
-    //   spawnableEntities.RemoveAt(0);
-    // }
-    // creates entity and changes some properties
+    //       timeBetweenSpawn = Random.Range(minTimeBetweenSpawn, maxTimeBetweenSpawn);
 
-    #endregion
+    //       GameObject spawn = CreateNPC();
+
+    //       yield return new WaitForSeconds(timeBetweenSpawn);
+
+    //       if (!AtSpawnCap()) Spawn();
+    //     }
+    //   }
+    //   GameObject CreateNPC()
+    //   {
+    //     ID = _ID++;
+        
+    //     GameObject spawn = (GameObject)Instantiate(prefab, GetSpawnPosition(), Quaternion.identity);
+    //     spawn.transform.parent = this.transform;
+
+    //     prefab.TryGetComponent<BasicAI>(out BasicAI ai);
+
+    //     // ai.AIManager = this;
+    //     ai.EntityManager = this;
+    //     ai.entityID = ID;
+    //     ai.Name = name;
+
+    //     AddToList(ai.entityID, spawn);
+
+    //     return spawn;
+    //   }
+    // #endregion
+
+    // #region [red] Respawn
+    // // public void Respawn()
+    // // {
+    // //   StartCoroutine(RespawnEntityRoutine());
+    // //   IEnumerator RespawnEntityRoutine()
+    // //   {
+    // //     timeBetweenSpawn = Random.Range(minTimeBetweenSpawn, maxTimeBetweenSpawn);
+
+    // //     RespawnEntity();
+
+    // //     // Instantiate(entity, GetSpawnPosition(), Quaternion.identity);
+    // //     // new GameObject = 
+
+    // //     yield return new WaitForSeconds(timeBetweenSpawn);
+
+    // //     if (IsSpawnable()) Respawn();
+    // //   }
+    // // }
+    // // void RespawnEntity()
+    // // {
+    // //   int RespawnID = GetSpawnableID();
+
+    // //   entityList[RespawnID].transform.position = GetSpawnPosition();
+
+    // //   SetActive(RespawnID);
+
+    // //   spawnableEntities.RemoveAt(0);
+    // // }
+    // // creates entity and changes some properties
+
+    // #endregion
   }
 }

@@ -7,78 +7,74 @@ namespace Lily
   public class EntityManager : MonoBehaviour
   {
     #region Parameters
-      protected Dictionary<int, GameObject> entityList = new Dictionary<int, GameObject>();
-      [SerializeField] protected List<GameObject> spawnedEntities = new List<GameObject>();
-      [SerializeField] protected List<GameObject> spawnableEntities = new List<GameObject>();
+      // protected Dictionary<int, GameObject> entityList = new Dictionary<int, GameObject>();
+      // [SerializeField] protected List<GameObject> spawnedEntities = new List<GameObject>();
+      // [SerializeField] protected List<GameObject> spawnableEntities = new List<GameObject>();
 
       protected GameObject prefab;
-      [SerializeField] public EntityData entityData;
+      protected EntityData entityData;
 
       protected static int _ID = 0;
       public int ID;
 
       protected string name;
 
-      [SerializeField] protected int spawnCount;
-      [SerializeField] protected int spawnCapacity;
-      [SerializeField] protected float minTimeBetweenSpawn;
-      [SerializeField] protected float maxTimeBetweenSpawn;
-      [SerializeField] protected Transform[] spawnLocations;
+      protected int spawnCount;
+      protected int spawnCapacity;
+      protected float minTimeBetweenSpawn;
+      protected float maxTimeBetweenSpawn;
+      protected Transform[] spawnLocations;
       protected float timeBetweenSpawn;
+
+      GameManager GameManager;
 
     #endregion
 
-      public EntityManager entityManager;
-      public void Init(EntityData eData)
+    #region Setup
+
+      public void Initialize(EntityData data, GameManager gameManager)
       {
-        entityData = eData;
+        GameManager = gameManager;
+        entityData = data;
+        LoadData(data);
       }
-    #region [black] Mono Methods
-      void Start()
+      void LoadData(EntityData data)
       {
-        name = entityData.name;
-        prefab = entityData.prefab;
-      }
-      void Update()
-      {
-        if (!AtSpawnCap())
-        {
-          Spawn();
-        }
+        name = data.name;
+        prefab = data.prefab;
+        spawnLocations = data.spawnLocations;
+        maxTimeBetweenSpawn = data.maxTimeBetweenSpawn;
+        minTimeBetweenSpawn = data.minTimeBetweenSpawn;
+        spawnCapacity = data.spawnCapacity;
       }
     #endregion
 
     #region [blue] Spawn
-      protected void Spawn()
+      public GameObject SpawnSingle(GameManager gameManager)
+      {
+        return CreateEntity(gameManager);
+      }
+
+      public void StartSpawner()
       {
         StartCoroutine(SpawnRoutine());
-
-        IEnumerator SpawnRoutine()
-        {
-          if (AtSpawnCap()) yield break;
-
-          timeBetweenSpawn = Random.Range(minTimeBetweenSpawn, maxTimeBetweenSpawn);
-
-          GameObject spawn = CreateEntity();
-          // Debug.Log("Spawning : " + spawn.name);
-
-          yield return new WaitForSeconds(timeBetweenSpawn);
-
-          if (!AtSpawnCap()) Spawn();
-          if (IsSpawnable()) Respawn();
-        }
       }
-      public List<GameObject> SpawnList(EntityData data)
+
+      IEnumerator SpawnRoutine()
       {
-        entityData = data;
-        for(int i = 0; i < spawnCapacity; i ++)
+        while (true)
         {
-          spawnedEntities.Add(CreateEntity());
+          if (!AtSpawnCap()) CreateEntity(GameManager);
+          else Debug.Log("Can't spawn entity, Spawn capacity reached.");
+          // Debug.Log("Spawning : " + spawn.name);
+          
+          timeBetweenSpawn = Random.Range(minTimeBetweenSpawn, maxTimeBetweenSpawn);
+          yield return new WaitForSeconds(timeBetweenSpawn);
         }
-
-        return spawnedEntities;
       }
-      protected GameObject CreateEntity()
+      
+
+      protected GameObject CreateEntity(GameManager gM)
       {
         // Debug.Log("Spawning");
 
@@ -89,83 +85,38 @@ namespace Lily
 
         prefab.TryGetComponent<Entity>(out Entity entity);
 
+        // entity.transform.parent = this.transform;
+
         entity.EntityManager = this;
+        entity.GameManager = gM;
         entity.entityID = ID;
         entity.Name = name;
 
-        AddToList(ID, spawn);
+        RegisterSpawn(spawn);
+        
 
         return spawn;
       }
     #endregion
-
-    #region [red] Respawn
-      protected void Respawn()
-    {
-      StartCoroutine(RespawnEntityRoutine());
-      IEnumerator RespawnEntityRoutine()
-      {
-        timeBetweenSpawn = Random.Range(minTimeBetweenSpawn, maxTimeBetweenSpawn);
-
-        RespawnEntity();
-
-        // Instantiate(entity, GetSpawnPosition(), Quaternion.identity);
-        // new GameObject = 
-
-        yield return new WaitForSeconds(timeBetweenSpawn);
-
-        if (IsSpawnable()) Respawn();
-      }
-    }
-      protected void RespawnEntity()
-    {
-      int RespawnID = GetSpawnableID();
-
-      entityList[RespawnID].transform.position = GetSpawnPosition();
-
-      SetActive(RespawnID);
-
-      spawnableEntities.RemoveAt(0);
-    }
-      //creates entity and changes some properties
-
-    #endregion
     
     #region [teal] Checks
-      public void AddToList(int ID, GameObject spawn)
+      public void RegisterSpawn(GameObject spawn)
       {
-        // entityList.Add(ID, spawn);
-        if (!entityList.TryAdd(ID, spawn)) Debug.Log("Entity not added to list: " + ID);
-
-        
-      }
-      public GameObject GetEntityFromList(int entityID)
-      {
-        
-        GameObject entity = entityList[entityID];
-        if (!entityList.TryGetValue(entityID, out GameObject e)) Debug.Log("Entity not found: " + entityID);
-        entity = e;
-        return entity;
+        GameManager.totalSpawnedEntities.Add(spawn);
+        spawnCount++;
       }
 
-      public int GetSpawnableID()
+      public bool TryRegisterDeath(GameObject entity)
       {
-        if (!spawnableEntities[0].TryGetComponent<Entity>(out Entity entity)) Debug.Log("Entity Component not found: " + entity);
+        if (GameManager.totalSpawnedEntities.Contains(entity)) 
+        {
+          GameManager.totalSpawnedEntities.Remove(entity);
+          spawnCount--;
+          return true;
+        }
+        return false;
+      }
 
-        return entity.entityID;
-      }
-      public void InstaKill(int entityID)
-      {
-        SetActive(entityID, false);
-
-        spawnableEntities.Add(GetEntityFromList(entityID));
-      }
-      public void SetActive(int entityID, bool active = true)
-      {
-        var entity = GetEntityFromList(entityID);
-        
-        entity.SetActive(active);
-      }
       public Vector3 GetSpawnPosition()
       {
         int oldSpawnIndex = spawnLocations.Length;
@@ -178,12 +129,12 @@ namespace Lily
       }
       public bool AtSpawnCap()
       {
-        spawnCount = entityList.Count;
         return spawnCount >= spawnCapacity;
       }
-      public bool IsSpawnable()
+
+      public float GetSpawnTime()
       {
-        return spawnableEntities.Count > 0;
+        return Random.Range(minTimeBetweenSpawn, maxTimeBetweenSpawn);
       }
     #endregion
   }

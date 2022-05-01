@@ -7,15 +7,14 @@ namespace Lily.Ai.ActionStates
 	{
 		private readonly BasicAI ai;
 		private readonly Rigidbody _rb;
-		public Attack(BasicAI _ai, Rigidbody rb)
+		public Attack(BasicAI Attacker, Rigidbody rb)
 		{
-			ai = _ai;
+			ai = Attacker;
 			_rb = rb;
 		}
 		public void Tick()
 		{
 			StopMoving();
-			AttackMove();
     }
 
 		void StopMoving()
@@ -24,15 +23,19 @@ namespace Lily.Ai.ActionStates
 		}
 		void AttackMove()
 		{
-			ai.TargetObj.TryGetComponent<Entity>(out Entity e);
+			if(!ai.TargetObj.TryGetComponent<BasicAI>(out BasicAI tmp)) Debug.Log("Attack Failed TryGetComponent");
 
-			int ID = e.entityID;
-			// Debug.Log("Attack " + e.Name);
-			e.EntityManager.InstaKill(ID);
+			// int ID = tmp.entityID;
+			// Debug.Log("Attack " + ID);
+			// e.EntityManager.InstaKill(ID);
+			ai.TargetObj.GetComponent<BasicAI>().TakeDamage(10);
+
+			// e.GameManager.InstaKill(ID);
+			// ai.Target = null;
 		}
 		public void OnEnter()
     {
-			
+			AttackMove();
     }
 		public void OnExit() { }
 	}

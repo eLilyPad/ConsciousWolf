@@ -9,6 +9,7 @@ namespace Lily
     public Rigidbody rb;
 
     public EntityManager EntityManager; 
+    public GameManager GameManager; 
 
     void  start()
     {

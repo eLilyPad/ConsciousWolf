@@ -15,3 +15,9 @@ MonoBehaviour:
   autoUpdate: 0
   name: Rabbit
   prefab: {fileID: 5296105018882928867, guid: b9ba83be95c4bab45b0cf2699e4cd7d5, type: 3}
+  spawnCapacity: 5
+  minTimeBetweenSpawn: 0
+  maxTimeBetweenSpawn: 0
+  spawnLocations:
+  - {fileID: 189631920440864828, guid: 8ea0897e714841d4eb06d1962ff643a0, type: 3}
+  - {fileID: 6388327083369768609, guid: b93717c40da5deb498ea8761e900df2f, type: 3}
