@@ -3,6 +3,6 @@ namespace Lily
   internal interface IRevivable
   {
 
-    void Revive();
+    void Revive(RespawnToken token);
   }
 }

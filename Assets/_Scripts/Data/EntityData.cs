@@ -16,7 +16,7 @@ namespace Lily
 
     public string TargetTag;
 
-    public enum EntityType 
+    public enum entityType 
     {
       Rabbit,
       Wolf,

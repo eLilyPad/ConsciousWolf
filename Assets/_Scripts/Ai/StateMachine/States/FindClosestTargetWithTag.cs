@@ -19,24 +19,31 @@ namespace Lily.Ai.ActionStates
 			// ai.Target = TheNearestWithTag();
 			// ai.TargetObj = TheNearestGOWithTag();
 			
-			SetTarget();
+			if (!SetTarget()) StopMoving(); // sets the target to self if no target is foun
 		}
 
-		void SetTarget()
+    private void StopMoving()
+    {
+      ai.TargetObj = ai.gameObject;
+    }
+
+    bool SetTarget()
 		{
 			// var targetManager = ai.GameManager.GetManager(entityManagerKey);
 
 			GameObject target;
-			// = ai.GameManager.FindClosestTarget(ai.transform.position, targetManager);
 
-			// if(target == null) 
-			// {
-				target = SearchClosestTarget(); 
-				// Debug.Log("Failed to get target from Manager");
-			// }
+			target = SearchClosestTarget(); 
 
-			ai.TargetObj = target;
-			ai.Target = target.transform;
+			bool isAnyTargets = SearchClosestTarget() == null ? false : true;
+
+			if(isAnyTargets)
+			{
+				ai.TargetObj = target;
+				ai.Target = target.transform;
+			}
+
+			return isAnyTargets; // return false if no targets are active 
 		}
 
 		private GameObject SearchClosestTarget()

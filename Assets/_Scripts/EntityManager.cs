@@ -1,4 +1,4 @@
-using System;
+using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -46,14 +46,6 @@ namespace Lily
       void OnEnable()
       { 
         
-      }
-
-      void LoadEvents()
-      {
-        foreach (Entity target in localEntities)
-        {
-          target.OnDeath += RegisterDeath;
-        }
       }
 
       public void Initialize(EntityData data)
@@ -129,30 +121,49 @@ namespace Lily
       {
         while (true)
         {
-          if((spawnableEntities?.Count ?? 0) == 0)
+          if(entityList.Any())
+          {
+            foreach (var entity in entityList)
+            {
+              if (entity.Value.Equals(false)) 
+              {
+                entity.Key.GetComponent<Entity>().Revive(GetRespawnToken());
+                Debug.Log("Revive " + entity.Key.Name);
+                
+                RegisterRespawn(entity.Key);
+              }
+            }
+            // if(entity.)
+            
+            yield return new WaitForSeconds(GetSpawnTimeFromRange());
+            
+            // if(entityList.GetEnumerator().Current.Value == false)
+            // spawnableEntities[0].gameObject.transform.position = GetSpawnPosition();
+            // entityList.ContainsValue(false);
+            // spawnableEntities[0].GetComponent<Entity>().Revive(GetRespawnToken());
+
+            
+          }
+          else 
           {
             yield return new WaitForSeconds(GetSpawnTimeFromRange());
             continue;
           }
           
-          else 
-          {
-            yield return new WaitForSeconds(GetSpawnTimeFromRange());
-            spawnableEntities[0].gameObject.transform.position = GetSpawnPosition();
-            spawnableEntities[0].Revive();
-          
-            RegisterRespawn(spawnableEntities[0]);
-          }
-          
         }
       }
 
-    
+      public RespawnToken GetRespawnToken()
+      {
+        var respawnToken = new RespawnToken(GetSpawnPosition(), GetSpawnTimeFromRange());
 
+        return respawnToken;
+      }
+    
     #endregion
 
     #region [teal] Checks
-    
+
     void RegisterRespawn(Entity entity)
     {
       // if (spawnableEntities.Contains(entity)) spawnableEntities.Remove(entity);
@@ -177,6 +188,7 @@ namespace Lily
         // if (localEntities.Contains(entity)) localEntities.Remove(entity);
 
         // if (!spawnableEntities.Contains(entity)) spawnableEntities.Add(entity);
+        entity.GetComponent<Entity>().Revive(GetRespawnToken());
 
         if (entityList.ContainsKey(entity)) entityList.Add(entity, false);
         
@@ -210,28 +222,22 @@ namespace Lily
       {
         return UnityEngine.Random.Range(minTimeBetweenSpawn, maxTimeBetweenSpawn);
       }
-      
-      // private GameObject SearchTargetsFromPoint(Vector3 center, float radius)
-      // {
-      //   GameObject[] targets = GameObject.FindGameObjectsWithTag(targetTag);
-      //   GameObject closestTarget = null;
-      //   float closestDistance = Mathf.Infinity;
-
-      //   foreach (GameObject target in targets)
-      //   {
-
-      //     float distanceFromTarget = Vector3.Distance(ai.transform.position, target.transform.position);
-      //     if (distanceFromTarget < closestDistance)
-      //     {
-      //       closestTarget = target;
-      //       closestDistance = distanceFromTarget;
-      //       //ai.oldTarget = TheNearestWithTag().name;
-      //     }
-      //   }
-
-      //   return closestTarget;
-      // }
 
     #endregion
+
+  }
+
+  public class RespawnToken
+  {
+    public Vector3 SpawnLocation;
+
+    public float TimeBetweenSpawn;
+
+    public RespawnToken(Vector3 spawnLocation, float timeBetweenSpawn)
+    {
+      SpawnLocation = spawnLocation;
+
+      TimeBetweenSpawn = timeBetweenSpawn;
+    }
   }
 }

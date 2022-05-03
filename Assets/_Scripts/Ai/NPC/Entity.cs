@@ -1,4 +1,6 @@
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Lily
@@ -24,10 +26,21 @@ namespace Lily
       gameObject.SetActive(false);
 		}
 
-    public void Revive()
+    public void Revive(RespawnToken token)
     {
-      this.gameObject.SetActive(true);
+      // EntityManager manager = GameManager.Instance.entityManagers[Name].GetComponent<EntityManager>();
+      // StartCoroutine(ReviveRoutine(manager.GetRespawnToken()));
+      Debug.Log("try revive");
+      StartCoroutine(ReviveRoutine(token));
+    }
+
+    IEnumerator ReviveRoutine(RespawnToken token)
+    {
+      // this.gameObject.transform.position = token.SpawnLocation;
       this.Health = 1;
+
+      yield return new WaitForSeconds(3);
+      this.gameObject.SetActive(true);
     }
   }
 }

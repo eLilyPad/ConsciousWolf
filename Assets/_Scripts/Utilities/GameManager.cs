@@ -6,25 +6,28 @@ using UnityEngine.Events;
 
 namespace Lily
 {
-  public class GameManager : MonoBehaviour
+  public class GameManager : SingletonMB<GameManager>
   {
     
-    [SerializeField] public List<Entity> totalSpawnedEntities = new List<Entity>();
-    [SerializeField] protected List<Entity> activeEntities = new List<Entity>();
+    [SerializeField] public List<Entity> globalEntities = new List<Entity>();
+    [SerializeField] protected List<Entity> globalActiveEntities = new List<Entity>();
 
     [SerializeField] public EntityData[] entityDataList;
 
     // List<EntityManager> entityManagers = new List<EntityManager>();
     public Dictionary<string, EntityManager> entityManagers = new Dictionary<string, EntityManager>();
-
-    void Awake()
+    
+    protected override void OnAwake()
     {
       // foreach(EntityData data in entityDataList) entityManagers.Add(InitializeManager(data));
       foreach(EntityData data in entityDataList) entityManagers.Add(data.name, InitializeManager(data));
     }
-    void Start()
-    {}
 
+    void Update()
+    {
+      GetGlobalEntities();
+    }
+    
     EntityManager InitializeManager(EntityData data)
     { 
       string managerName = data.name + " Spawner";
@@ -45,19 +48,27 @@ namespace Lily
     //   }
     // }
     
-    public List<Entity> SearchTargetsFromPoint(Vector3 position, float radius)
+    public List<Entity> GetGlobalEntities()
     {
-      foreach(EntityData data in entityDataList) activeEntities.AddRange(entityManagers[data.name].GetLocalEntities);
+      foreach(EntityData data in entityDataList) globalEntities.AddRange(entityManagers[data.name].GetLocalEntities);
 
       List<Entity> targets = new List<Entity>();
 
-      foreach (var target in activeEntities)
+      return targets;
+    }
+
+    public List<Entity> SearchTargetsFromPoint(Vector3 position, float radius = 0)
+    {
+
+      List<Entity> targets = GetGlobalEntities();
+
+      foreach (var target in targets)
       {
         if (target == null) continue;
 
         float distance = Vector3.Distance(position, target.gameObject.transform.position);
 
-        if (distance <= radius) targets.Add(target);
+        if (distance <= radius || radius == 0) targets.Add(target);
       }
 
       return targets;

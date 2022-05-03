@@ -26,7 +26,7 @@ namespace Lily.Ai.ActionStates
 		void AttackMove()
 		{
 			// int ID = tmp.entityID;
-			Debug.Log("Attack " + ai.TargetObj.name);
+			// Debug.Log("Attack " + ai.TargetObj.name);
 			// e.EntityManager.InstaKill(ID);
 			ai.TargetObj.GetComponent<Entity>().TakeDamage(10);
 
