@@ -14,5 +14,14 @@ namespace Lily
     public float maxTimeBetweenSpawn;
     public Transform[] spawnLocations;
 
+    public string TargetTag;
+
+    public enum EntityType 
+    {
+      Rabbit,
+      Wolf,
+      Food
+    }
+
   }
 }

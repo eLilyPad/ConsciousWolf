@@ -16,9 +16,10 @@ MonoBehaviour:
   name: Food
   prefab: {fileID: 2760571997666750771, guid: fa328507d1326264092060b1b758858c, type: 3}
   spawnCapacity: 3
-  minTimeBetweenSpawn: 0
-  maxTimeBetweenSpawn: 0
+  minTimeBetweenSpawn: 1
+  maxTimeBetweenSpawn: 3
   spawnLocations:
   - {fileID: 7590928981956057336, guid: 4f66d23255accf5418e4d0f23ab63dfd, type: 3}
   - {fileID: 6149630213871296312, guid: 0128a14313014934c834e2da31038baa, type: 3}
   - {fileID: 7363243186835832282, guid: 350c3eb4a72d2e742a50e8ec2001cc3d, type: 3}
+  TargetTag: 

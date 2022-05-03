@@ -10,15 +10,14 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9834aaf09c191de49a1510aab570f5bd, type: 3}
-  m_Name: Rabbit
+  m_Name: Wolf
   m_EditorClassIdentifier: 
   autoUpdate: 0
-  name: Rabbit
-  prefab: {fileID: 5296105018882928867, guid: b9ba83be95c4bab45b0cf2699e4cd7d5, type: 3}
-  spawnCapacity: 5
-  minTimeBetweenSpawn: 1
-  maxTimeBetweenSpawn: 3
+  name: Wolf
+  prefab: {fileID: 3147523997743331746, guid: c4371d59f4d720b41a05583a5ac172c3, type: 3}
+  spawnCapacity: 1
+  minTimeBetweenSpawn: 0
+  maxTimeBetweenSpawn: 0
   spawnLocations:
-  - {fileID: 189631920440864828, guid: 8ea0897e714841d4eb06d1962ff643a0, type: 3}
-  - {fileID: 6388327083369768609, guid: b93717c40da5deb498ea8761e900df2f, type: 3}
-  TargetTag: Food
+  - {fileID: 1543993467741993498, guid: 14d5409b4641770469b4e0126ed39449, type: 3}
+  TargetTag: Rabbit

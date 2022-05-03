@@ -15,10 +15,12 @@ namespace Lily.Ai
 			planner = GetComponent<PathPlanner>();
 
 			_stateMachine = new BasicStateMachine();//calls a new state machine
+			
 			var Search = new FindClosestTargetWithTag(this, targetTag);
 			var Rest = new Rest(this, rb);
 			var MoveToTarget = new MoveToTarget(this, rb);
 			var Attack = new Attack(this, rb);
+			// var AvoidCollision = new AvoidCollision(this, rb);
 
 			At(Search, Rest, HasTarget());
 			At(Rest, MoveToTarget, HasPath());
@@ -31,8 +33,8 @@ namespace Lily.Ai
 
 			void At(IState from, IState to, Func<bool> condition) => _stateMachine.AddTransition(from, to, condition);
 			
-			Func<bool> HasTarget() => () => Target != null;
-			Func<bool> HasNoTarget() => () => Target == null;
+			Func<bool> HasTarget() => () => Target != null || Target.gameObject.activeInHierarchy;
+			Func<bool> HasNoTarget() => () => Target == null || !Target.gameObject.activeInHierarchy;
 			Func<bool> HasNoPath() => () => currentPath == null;
 			Func<bool> HasPath() => () => currentPath != null;
 			Func<bool> InAttackRange() => () => CheckAttackRange() == true;
@@ -46,15 +48,6 @@ namespace Lily.Ai
 			planner.CheckProgress();
 			
 			if (Target != null)CheckAttackRange();
-		}
-		bool CheckAttackRange()
-		{
-			float distanceFromTarget = Vector3.Distance(this.transform.position, Target.position);
-
-			if (distanceFromTarget <= AttackRange) return true;
-
-			return false;
-			//audioManager.PlayRandomSound();
 		}
   }
 }

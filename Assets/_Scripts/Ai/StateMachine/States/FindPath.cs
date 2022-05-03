@@ -26,7 +26,6 @@ namespace Lily.Ai.ActionStates
       if ((targetPos - targetPosOld).sqrMagnitude > sqrMoveThreshold)
       {
         UpdatePath(currentPos, targetPos);
-        ai.targetMoved = true;
       }
     }
 
@@ -41,7 +40,6 @@ namespace Lily.Ai.ActionStates
       if (pathSuccessful)
       {
         ai.currentPath = new Path(waypoints, ai.transform.position, ai.turnDst, ai.stoppingDst);
-        ai.targetMoved = false;
       }
     }
 		public void OnEnter() 

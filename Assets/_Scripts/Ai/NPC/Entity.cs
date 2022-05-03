@@ -1,19 +1,33 @@
+using System;
 using UnityEngine;
 
 namespace Lily
 {
-  public class Entity : MonoBehaviour
+  public class Entity : MonoBehaviour, IDamagable, IRevivable
   {
+    public event Action<Entity> OnDeath;
     public int entityID;
     public string Name;
     public Rigidbody rb;
 
-    public EntityManager EntityManager; 
-    public GameManager GameManager; 
+		public int Health= 1;
 
-    void  start()
+    public void TakeDamage(int damage)
     {
-      EntityManager = GetComponent<EntityManager>();
+      Health -= damage;
+			if(Health <= 0)Die();
+    }
+		public void Die()
+		{
+      OnDeath?.Invoke(this);
+
+      gameObject.SetActive(false);
+		}
+
+    public void Revive()
+    {
+      this.gameObject.SetActive(true);
+      this.Health = 1;
     }
   }
 }

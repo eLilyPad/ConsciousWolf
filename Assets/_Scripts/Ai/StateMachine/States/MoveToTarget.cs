@@ -24,6 +24,7 @@ namespace Lily.Ai.ActionStates
 		{
 			LookAtWaypoint();
 			MoveForward();
+			if(WithinRangeOfTarget())StopMoving();
 		}
 		public void OnEnter()
 		{}
@@ -35,7 +36,9 @@ namespace Lily.Ai.ActionStates
 	#region [red] Movement 
 		void LookAtWaypoint()
 		{
-			_ai.transform.LookAt(_ai.waypoint);
+			Vector3 direction = new Vector3(_ai.waypoint.x, _ai.transform.position.y, _ai.waypoint.z);
+			// direction.Normalize();
+			_ai.transform.LookAt(direction);
 			//RotateYToTarget(_ai.waypoint, _ai.turnSpeed, false);
 		}
 		void MoveForward()
@@ -114,6 +117,15 @@ namespace Lily.Ai.ActionStates
 		void NotAtWaypoint()
 		{
 			_ai.AtWayPoint = false;
+		}
+
+		public bool WithinRangeOfTarget()
+		{
+			float distanceFromTarget = Vector3.Distance(_ai.transform.position, _ai.Target.position);
+
+			if (distanceFromTarget <= _ai.AttackRange) return true;
+
+			return false;
 		}
 
 	#endregion

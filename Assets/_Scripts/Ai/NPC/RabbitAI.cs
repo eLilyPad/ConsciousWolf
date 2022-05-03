@@ -10,11 +10,8 @@ namespace Lily.Ai
 	using MovementSystem.Controller;
   using UnityEngine.VFX;
 
-  public class RabbitAI : BasicAI, IDamagable
+  public class RabbitAI : BasicAI
 	{
-    
-    #region Variables
-    #endregion
 
     void Awake()
 		{
@@ -27,7 +24,7 @@ namespace Lily.Ai
 			var Rest = new Rest(this, rb);
 			var MoveToTarget = new MoveToTarget(this, rb);
 
-			var Attack = new Attack(this, rb);
+			var Eat = new EatFood(this, rb);
 			// var flee = new Flee(this, controller, enemyDetector);
 			// var chase = new Chase(this, controller, enemyDetector);
 
@@ -35,7 +32,7 @@ namespace Lily.Ai
 			
 			At(Rest, MoveToTarget, HasPath());
 			At(MoveToTarget, Rest, HasNoPath());
-			At(MoveToTarget, Attack, InAttackRange());
+			At(MoveToTarget, Eat, InAttackRange());
 
 			_stateMachine.AddAnyTransition(Search, HasNoTarget());
 
@@ -43,8 +40,8 @@ namespace Lily.Ai
 
 
 			void At(IState from, IState to, Func<bool> condition) => _stateMachine.AddTransition(from, to, condition);
-			Func<bool> HasTarget() => () => Target != null;
-			Func<bool> HasNoTarget() => () => Target == null;
+			Func<bool> HasTarget() => () => Target != null || Target.gameObject.activeInHierarchy;
+			Func<bool> HasNoTarget() => () => Target == null || !Target.gameObject.activeInHierarchy;
 			Func<bool> HasPath() => () => currentPath != null;
 			Func<bool> HasNoPath() => () => currentPath == null;
 			Func<bool> InAttackRange() => () => CheckAttackRange() == true;
@@ -59,20 +56,5 @@ namespace Lily.Ai
 
 			if (Target != null)CheckAttackRange();	
 		}
-
-		bool CheckAttackRange()
-    {
-      float distanceFromTarget = Vector3.Distance(this.transform.position, Target.position);
-
-      if (distanceFromTarget <= AttackRange) return true;
-      return false;
-      //audioManager.PlayRandomSound();
-    }
-	
-		public void TakeDamage(int damage)
-    {
-      Health -= damage;
-			if(Health <= 0)Destroy(gameObject);
-    }
 	}
 }

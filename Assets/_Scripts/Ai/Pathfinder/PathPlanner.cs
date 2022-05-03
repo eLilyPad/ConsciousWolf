@@ -109,7 +109,7 @@ namespace Lily.Ai.Pathfinder
 	  public void CheckProgress()
 		{ 
       float distanceFromTarget = Vector3.Distance(_ai.transform.position, _ai.waypoint);
-			if(distanceFromTarget < _ai.stoppingDst+2)
+			if(distanceFromTarget < _ai.stoppingDst + 2)
 			{
 				WaypointPointReached();
 			}

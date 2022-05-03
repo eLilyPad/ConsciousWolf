@@ -3,20 +3,18 @@ using UnityEngine;
 namespace Lily.Ai.ActionStates
 {
 	using Ai;
-	public class Attack : IState
+	public class EatFood : IState
 	{
 		private readonly BasicAI ai;
 		private readonly Rigidbody _rb;
-		public Attack(BasicAI Attacker, Rigidbody rb)
+		public EatFood(BasicAI Eater, Rigidbody rb)
 		{
-			ai = Attacker;
+			ai = Eater;
 			_rb = rb;
 		}
 		public void Tick()
 		{
 			StopMoving();
-
-			if(ai.TargetObj != null) AttackMove();
     }
 
 		void StopMoving()
@@ -25,8 +23,10 @@ namespace Lily.Ai.ActionStates
 		}
 		void AttackMove()
 		{
+			// if(!ai.TargetObj.TryGetComponent<BasicAI>(out BasicAI tmp)) Debug.Log("Attack Failed TryGetComponent");
+
 			// int ID = tmp.entityID;
-			Debug.Log("Attack " + ai.TargetObj.name);
+			// Debug.Log("Attack " + ID);
 			// e.EntityManager.InstaKill(ID);
 			ai.TargetObj.GetComponent<Entity>().TakeDamage(10);
 

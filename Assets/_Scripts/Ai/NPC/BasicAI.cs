@@ -7,65 +7,37 @@ namespace Lily.Ai
   using Pathfinder;
   using MovementSystem.Controller;
 
-  public class BasicAI : Entity, IDamagable
+  public class BasicAI : Entity
 		{
 		#region Variables
-		
-			#region Pathfinding Constants
 
-				protected const float minPathUpdateTime = .2f;
-				protected const float pathUpdateMoveThreshold = .5f;
-				
-			#endregion
-			#region Health
-
-				// [SerializeField] protected int health;
-				public int Health= 1;
-				// {
-				// 	get 
-				// }
-
-			#endregion
 			protected BasicStateMachine _stateMachine;
-			public MovementController mc;
 			
 			public Transform Target;
 
 			public Vector3 waypoint;
 			public string targetTag;
 
-    	public float maxSpeed = 20;
+    	public float maxAcceleration = 20;
 			public float acceleration;
-    	public float turnSpeed = 3;
     	public float turnDst = 5;
-			public float turnPenalty = 1;
   		public float stoppingDst = 10;
 			public Path currentPath;
 			public int pathIndex;
 			public bool PathComplete = false;
-			public bool targetMoved;
 			public bool AtWayPoint = false;
 			public float AttackRange = 3;
+			
+			public float AvoidanceRange = 2;
+			public bool InAvoidanceRange = false;
 
 			public bool drawGizmos = false;
-
-			public float turnThreshold = 10f;
 
 			public PathPlanner planner;
 
 			public AudioManager audioManager;
 
 			public VisualEffect deathEffect;
-
-			private bool _isAlive = true;
-
-			public bool IsAlive 
-			{ 
-				get { return _isAlive; }   // get method
-				set { _isAlive = value; } 
-			}
-
-			// public AIManager AIManager;
 
 			public GameObject TargetObj;
 
@@ -75,7 +47,18 @@ namespace Lily.Ai
 		{}
 
 		private void Update() 
-		{}
+		{
+		}
+
+		public bool CheckAttackRange()
+		{
+			float distanceFromTarget = Vector3.Distance(this.transform.position, Target.position);
+
+			if (distanceFromTarget <= AttackRange) return true;
+
+			return false;
+			//audioManager.PlayRandomSound();
+		}
 
 		public void OnDrawGizmos() 
 		{
@@ -86,18 +69,6 @@ namespace Lily.Ai
 					currentPath.DrawWithGizmos ();
 				}
 			}
-		}
-		public void TakeDamage(int damage)
-    {
-      Health -= damage;
-			if(Health <= 0)Destroy(gameObject);
-    }
-		public void OnDeath()
-		{
-			if(GameManager.TryRegisterDeath(this.gameObject)) Destroy(this.gameObject);
-			
-			else Debug.Log("Failed to register death: " + this.gameObject.ToString());
-
 		}
 	}
 }
