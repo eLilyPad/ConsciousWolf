@@ -17,6 +17,8 @@ namespace Lily.Ai.Pathfinder
     private float sqrMoveThreshold = pathUpdateMoveThreshold * pathUpdateMoveThreshold;
 		BasicAI _ai;
 
+    public Path path;
+
     protected BasicStateMachine _stateMachine;
 
     int finishLineIndex;
@@ -67,19 +69,35 @@ namespace Lily.Ai.Pathfinder
         }
       }
     }
-    
+
+    public Path GetPath(Vector3 position, Vector3 destination)
+    {
+      PathRequestManager.RequestPath(new PathRequest(position, destination, OnPathFound));
+
+      void OnPathFound(Vector3[] waypoints, bool pathSuccessful)
+      {
+        if (pathSuccessful && _ai.Target != null)
+        {
+          path = new Path(waypoints, _ai.transform.position, _ai.turnDst, _ai.stoppingDst);
+        }
+      }
+
+      // return path == null? path: GetPath(position, destination);
+      return path;
+    }
+
     public void OnPathFound(Vector3[] waypoints, bool pathSuccessful)
     {
       if (pathSuccessful && _ai.Target != null)
       {
-        Path _path = new Path(waypoints, _ai.transform.position, _ai.turnDst, _ai.stoppingDst);
+        path = new Path(waypoints, _ai.transform.position, _ai.turnDst, _ai.stoppingDst);
 
-        _ai.currentPath = new Path(waypoints, _ai.transform.position, _ai.turnDst, _ai.stoppingDst);
+        _ai.currentPath = path;
         finishLineIndex = _ai.currentPath.finishLineIndex;
         StartPath();
       }
     }
-    
+
   #endregion
 
   #region [red]FollowPath

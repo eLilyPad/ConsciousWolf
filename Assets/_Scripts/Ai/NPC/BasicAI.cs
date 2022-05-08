@@ -12,8 +12,6 @@ namespace Lily.Ai
 		#region Variables
 
 			protected BasicStateMachine _stateMachine;
-
-			MovementController steering;
 			
 			public Transform Target;
 
@@ -32,6 +30,7 @@ namespace Lily.Ai
 			public bool drawGizmos = false;
 
 			public PathPlanner planner;
+
 			public VisualEffect deathEffect;
 
 			public GameObject TargetObj;
@@ -40,7 +39,7 @@ namespace Lily.Ai
 
 		void Awake()
 		{
-			steering = GetComponent<MovementController>();
+			// steering = GetComponent<MovementController>();
       rb = GetComponent<Rigidbody>();
 		}
 

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 using System;
+using Lily.MovementSystem;
 
 namespace Lily
 {
@@ -102,6 +103,8 @@ namespace Lily
 
         Entity entity = spawn.GetComponent<Entity>();
         if (entity == null) entity = spawn.AddComponent<Entity>();
+        
+        entity.followPath = spawn.AddComponent<FollowPath>();
         // Entity entity = spawn.AddComponent<Entity>();
 
         entity.entityID = ID;

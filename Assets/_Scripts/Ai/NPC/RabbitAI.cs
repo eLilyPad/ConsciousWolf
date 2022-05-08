@@ -7,17 +7,17 @@ namespace Lily.Ai
 	using ActionStates;
 	using StateMachine;
 	using Pathfinder;
-	using MovementSystem.Controller;
+	using MovementSystem;
   using UnityEngine.VFX;
 
   public class RabbitAI : BasicAI
 	{
-
     void Awake()
 		{
 			deathEffect.Stop();
 			planner = GetComponent<PathPlanner>();
 			rb = GetComponent<Rigidbody>();
+			// followPath = GetComponent<FollowPath>();
 			_stateMachine = new BasicStateMachine();//calls a new state machine
 
 			TaskMachine();

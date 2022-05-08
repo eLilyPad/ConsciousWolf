@@ -18,7 +18,7 @@ namespace Lily.MovementSystem
 
 				[Header("Arrive")]
 				
-			///<summary>
+			/// <summary>
 			/// The radius from the target that means we are close enough and have arrived
 			/// </summary>
 			public float targetRadius = 0.005f;

@@ -1,8 +1,9 @@
-using Lily.Ai.Pathfinder;
 using UnityEngine;
 
 namespace Lily.MovementSystem
 {
+    using Lily.Ai.Pathfinder;
+    using Lily.MathsUtils;
     public class FollowPath : MovementController
     {
         public float stopRadius = 0.005f;
@@ -13,16 +14,11 @@ namespace Lily.MovementSystem
 
         public Vector3 GetSteering(Path path)
         {
-            return GetSteering(path, false);
-        }
-
-        public Vector3 GetSteering(Path path, bool pathLoop)
-        {
             Vector3 targetPosition;
-            return GetSteering(path, pathLoop, out targetPosition);
+            return GetSteering(path, out targetPosition);
         }
 
-        public Vector3 GetSteering(Path path, bool pathLoop, out Vector3 targetPosition)
+        public Vector3 GetSteering(Path path, out Vector3 targetPosition)
         {
 
             /* If the path has only one node then just go to that position. */
@@ -34,12 +30,9 @@ namespace Lily.MovementSystem
             else
             {
                 /* Get the param for the closest position point on the path given the character's position */
-                float param = path.GetParam(transform.position, rb);
+                float param = MathsUtils.PositionOnLine(transform.position, path.Waypoints);
 
                 //Debug.DrawLine(transform.position, path.getPosition(param, pathLoop), Color.red, 0, false);
-
-                if (!pathLoop)
-                {
                     Vector3 finalDestination;
 
                     /* If we are close enough to the final destination then stop moving */
@@ -50,13 +43,13 @@ namespace Lily.MovementSystem
                         rb.velocity = Vector3.zero;
                         return Vector3.zero;
                     }
-                }
+
 
                 /* Move down the path */
                 param += pathDirection * pathOffset;
 
                 /* Set the target position */
-                targetPosition = path.GetPosition(param, pathLoop);
+                targetPosition = MathsUtils.PositionOnLine(path.Waypoints, param);
 
                 //Debug.DrawLine(transform.position, targetPosition, Color.red, 0, false);
             }
@@ -81,7 +74,7 @@ namespace Lily.MovementSystem
                 Vector3 finalDestination;
 
                 /* Get the param for the closest position point on the path given the character's position */
-                float param = path.GetParam(transform.position, rb);
+                float param = MathsUtils.PositionOnLine(transform.position, path.Waypoints);
 
                 return IsAtEndOfPath(path, param, out finalDestination);
             }

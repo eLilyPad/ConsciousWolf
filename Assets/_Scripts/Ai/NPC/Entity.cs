@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Lily.MovementSystem;
 using UnityEngine;
 
 namespace Lily
@@ -13,6 +14,13 @@ namespace Lily
     public string Name;
     public Rigidbody rb;
 
+    public FollowPath followPath;
+
+    void Awake()
+    {
+      followPath = GetComponent<FollowPath>();
+      rb = GetComponent<Rigidbody>();
+    }
 		public int Health= 1;
 
     public void TakeDamage(int damage)

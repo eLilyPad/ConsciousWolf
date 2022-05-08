@@ -20,7 +20,7 @@ namespace Lily.Ai.Pathfinder
     {
 
       Stopwatch sw = new Stopwatch();
-      sw.Start();
+      // sw.Start();
 
       Vector3[] waypoints = new Vector3[0];//Store waypoints
       bool pathSuccess = false;
@@ -44,7 +44,7 @@ namespace Lily.Ai.Pathfinder
 
           if (currentNode == targetNode)
           {
-            sw.Stop();
+            // sw.Stop();
             pathSuccess = true;
             break;
             // Ends the path at the target node

@@ -10,8 +10,7 @@ namespace Lily.Ai.Pathfinder
     public Vector3[] Waypoints;
     public readonly Line[] TurnBoundaries;
 
-    [NonSerialized] public float[] Distances;
-    [NonSerialized] public float DistanceToEnd;
+    float stoppingDistance;
 
     public Vector3 this[int i]
     {
@@ -31,19 +30,32 @@ namespace Lily.Ai.Pathfinder
     {
       get { return TurnBoundaries[finishLineIndex]; }
     }
-    public readonly int slowDownIndex;
+    public float[] Distances
+    {
+      get { return MathsUtils.DistancesTo(Waypoints);}
 
-/// <summary>
-/// Creates a new Path
-/// </summary>
-/// <param name="waypoints">Waypoints.</param>
-/// <param name="startPos"></param>
-/// <param name="turnDst"></param>
-/// <param name="stoppingDst"></param>
+      set { Distances = value; }
+    }
+    public float DistanceToEnd
+    {
+      get { return Distances[Distances.Length - 1];}
+    }
+    public int slowDownIndex
+    {
+      get { return MathsUtils.LastIndex(Waypoints, stoppingDistance);}
+    }
+    /// <summary>
+    /// Creates a new Path
+    /// </summary>
+    /// <param name="waypoints">Waypoints.</param>
+    /// <param name="startPos"></param>
+    /// <param name="turnDst"></param>
+    /// <param name="stoppingDst"></param>
     public Path(Vector3[] waypoints, Vector3 startPos, float turnDst, float stoppingDst)
     {
       Waypoints = waypoints;
       TurnBoundaries = new Line[Waypoints.Length];
+      stoppingDistance = stoppingDst;
 
       // V3ToV2;
       Vector2 previousPoint = MathsUtils.V3ToV2(startPos);
@@ -55,37 +67,7 @@ namespace Lily.Ai.Pathfinder
         TurnBoundaries[i] = new Line(turnBoundaryPoint, previousPoint - dirToCurrentPoint * turnDst);
         previousPoint = turnBoundaryPoint;
       }
-      
-      slowDownIndex = GetSlowDownIndex(Waypoints, stoppingDst);
-    }
-
-    // Move To MathsUtils
-    public int GetSlowDownIndex(Vector3[] points, float stoppingDistance)
-    {
-      int slowIndex = 0;
-      float dstFromEndPoint = 0;
-      for (int i = Waypoints.Length - 1; i > 0; i--)
-      {
-        dstFromEndPoint += Vector3.Distance(Waypoints[i], Waypoints[i - 1]);
-        if (dstFromEndPoint > stoppingDistance)
-        {
-          slowIndex = i;
-        }
-      }
-      return slowIndex;
-    }
-
-    public void CalculateDistances()
-    {
-      Distances = MathsUtils.CalculateDistances(Waypoints);
-    }
-
-    public float GetDistanceToEnd()
-    {
-      CalculateDistances();
-
-      return DistanceToEnd = Distances[Distances.Length - 1];
-    }
+    } 
 
     public int GetClosestWaypointsIndex(Vector3 position)
     {

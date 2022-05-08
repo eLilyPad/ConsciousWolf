@@ -7,12 +7,15 @@ namespace Lily.Ai
 	using ActionStates;
 	using StateMachine;
 	using Pathfinder;
+  using Lily.MovementSystem;
+
   public class WolfAI : BasicAI
   {
 		void Awake()
 		{
 			rb = GetComponent<Rigidbody>();
 			planner = GetComponent<PathPlanner>();
+			// followPath = GetComponent<FollowPath>();
 
 			_stateMachine = new BasicStateMachine();//calls a new state machine
 			
