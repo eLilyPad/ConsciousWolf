@@ -1,0 +1,153 @@
+fileFormatVersion: 2
+guid: fec36e108e8fde44b9457c15af21f7ab
+ModelImporter:
+  serializedVersion: 21202
+  internalIDToNameTable:
+  - first:
+      74: -2635028672703606307
+    second: Plane.001|PlaneAction.002
+  - first:
+      74: -1014278440864146011
+    second: Plane.001|PlaneAction.004
+  - first:
+      74: 2308148475920938318
+    second: Plane.001|PlaneAction.006
+  - first:
+      74: -2599151457327662641
+    second: Plane.001|PlaneAction.008
+  - first:
+      74: 4403000283954153961
+    second: Plane.002|PlaneAction.002
+  - first:
+      74: -6423960799304265074
+    second: Plane.002|PlaneAction.004
+  - first:
+      74: 7878021505294606081
+    second: Plane.002|PlaneAction.006
+  - first:
+      74: 4029188494776624835
+    second: Plane.002|PlaneAction.008
+  - first:
+      74: 3026961082355203323
+    second: Plane.003|PlaneAction.002
+  - first:
+      74: 5816205494879527287
+    second: Plane.003|PlaneAction.004
+  - first:
+      74: -7023939760782693664
+    second: Plane.003|PlaneAction.006
+  - first:
+      74: -1579902286447479250
+    second: Plane.003|PlaneAction.008
+  - first:
+      74: -8877306627514322347
+    second: Plane.004|PlaneAction.002
+  - first:
+      74: -5322044301489570373
+    second: Plane.004|PlaneAction.004
+  - first:
+      74: 5495856577271880021
+    second: Plane.004|PlaneAction.006
+  - first:
+      74: -3825911563215093396
+    second: Plane.004|PlaneAction.008
+  externalObjects: {}
+  materials:
+    materialImportMode: 2
+    materialName: 0
+    materialSearch: 1
+    materialLocation: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    removeConstantScaleCurves: 1
+    motionNodeName: 
+    rigImportErrors: 
+    rigImportWarnings: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    importAnimatedCustomProperties: 0
+    importConstraints: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    extraUserProperties: []
+    clipAnimations: []
+    isReadable: 0
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 100
+    meshCompression: 0
+    addColliders: 0
+    useSRGBMaterialColor: 1
+    sortHierarchyByName: 1
+    importVisibility: 0
+    importBlendShapes: 0
+    importCameras: 0
+    importLights: 0
+    nodeNameCollisionStrategy: 1
+    fileIdsGeneration: 2
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    keepQuads: 0
+    weldVertices: 1
+    bakeAxisConversion: 0
+    preserveHierarchy: 0
+    skinWeightsMode: 0
+    maxBonesPerVertex: 4
+    minBoneWeight: 0.001
+    optimizeBones: 1
+    meshOptimizationFlags: -1
+    indexFormat: 0
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVMarginMethod: 1
+    secondaryUVMinLightmapResolution: 40
+    secondaryUVMinObjectScale: 1
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+    normalCalculationMode: 4
+    legacyComputeAllNormalsFromSmoothingGroupsWhenMeshHasBlendShapes: 0
+    blendShapeNormalImportMode: 1
+    normalSmoothingSource: 0
+  referencedClips: []
+  importAnimation: 1
+  humanDescription:
+    serializedVersion: 3
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    globalScale: 1
+    rootMotionBoneName: 
+    hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 1
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  autoGenerateAvatarMappingIfUnspecified: 1
+  animationType: 2
+  humanoidOversampling: 1
+  avatarSetup: 0
+  addHumanoidExtraRootOnlyWhenUsingAvatar: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

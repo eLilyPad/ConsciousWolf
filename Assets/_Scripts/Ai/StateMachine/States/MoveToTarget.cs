@@ -4,13 +4,11 @@ namespace Lily.Ai.ActionStates
 {
 	using Ai.Pathfinder;
 	using Ai;
-	using Lily.MovementSystem.Controller;
 	public class MoveToTarget : IState
 	{
 		private BasicAI _ai;
 		private readonly Rigidbody _rb;
 
-		MovementController _mc;
 
 		float MsTurnPenalty = 1;
 		public MoveToTarget(BasicAI ai, Rigidbody rb)

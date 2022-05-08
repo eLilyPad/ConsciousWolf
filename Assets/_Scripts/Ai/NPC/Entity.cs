@@ -7,7 +7,8 @@ namespace Lily
 {
   public class Entity : MonoBehaviour, IDamagable, IRevivable
   {
-    public event Action<Entity> OnDeath;
+    public static event Action<Entity> OnDeath;
+    public EntityManager Manager;
     public int entityID;
     public string Name;
     public Rigidbody rb;
@@ -19,28 +20,26 @@ namespace Lily
       Health -= damage;
 			if(Health <= 0)Die();
     }
-		public void Die()
+		public virtual void Die()
 		{
+      // Manager.RegisterDeath(this);
       OnDeath?.Invoke(this);
 
-      gameObject.SetActive(false);
+      this.gameObject.SetActive(false);
 		}
 
     public void Revive(RespawnToken token)
     {
-      // EntityManager manager = GameManager.Instance.entityManagers[Name].GetComponent<EntityManager>();
-      // StartCoroutine(ReviveRoutine(manager.GetRespawnToken()));
-      Debug.Log("try revive");
-      StartCoroutine(ReviveRoutine(token));
+      // if(token != null)
+      // {
+      //   this.transform.position = token.SpawnLocation;
+
+      //   this.Health = 1;
+      //   this.gameObject.SetActive(true);
+      // }
+      // StartCoroutine(ReviveRoutine(token));
     }
 
-    IEnumerator ReviveRoutine(RespawnToken token)
-    {
-      // this.gameObject.transform.position = token.SpawnLocation;
-      this.Health = 1;
-
-      yield return new WaitForSeconds(3);
-      this.gameObject.SetActive(true);
-    }
+    
   }
 }

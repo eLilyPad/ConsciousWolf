@@ -30,6 +30,11 @@ namespace Lily.Ai.Pathfinder
       _ai = ai;
       StartCoroutine(UpdatePath());
     }
+
+    public void StopPlanner(BasicAI ai)
+    {
+      StopCoroutine(UpdatePath());
+    }
     
   #endregion
 
@@ -100,7 +105,7 @@ namespace Lily.Ai.Pathfinder
       }
       else
       {
-        _ai.waypoint = _ai.currentPath.lookPoints[_ai.pathIndex];
+        _ai.waypoint = _ai.currentPath.Waypoints[_ai.pathIndex];
       }
     }
   #endregion

@@ -3,12 +3,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+using System;
 
 namespace Lily
 {
   public class EntityManager : MonoBehaviour
   {
     #region Events
+
+      // public static event Action<Entity> OnDeath;
+      
       // [SerializeField] UnityEvent OnDeath;
       // [SerializeField] UnityEvent OnRevive;
 
@@ -45,7 +49,7 @@ namespace Lily
 
       void OnEnable()
       { 
-        
+        Entity.OnDeath += RegisterDeath;
       }
 
       public void Initialize(EntityData data)
@@ -53,7 +57,6 @@ namespace Lily
         entityData = data;
         LoadData(data);
         StartSpawner();
-        StartRespawn();
         // LoadEvents();
       }
       void LoadData(EntityData data)
@@ -97,13 +100,15 @@ namespace Lily
         GameObject spawn = (GameObject)Instantiate(prefab, GetSpawnPosition(), Quaternion.identity);
         spawn.transform.parent = this.transform;
 
-        Entity entity = spawn.AddComponent<Entity>();
+        Entity entity = spawn.GetComponent<Entity>();
+        if (entity == null) entity = spawn.AddComponent<Entity>();
+        // Entity entity = spawn.AddComponent<Entity>();
 
         entity.entityID = ID;
         entity.Name = name;
-
+        entity.Manager = this;
+        // entity.OnDeath += RegisterDeath;
         
-        entity.OnDeath += RegisterDeath;
 
         RegisterSpawn(entity);
 
@@ -112,46 +117,6 @@ namespace Lily
     #endregion
 
     #region [green] Respawn Entities
-      public void StartRespawn()
-      {
-        StartCoroutine(RespawnRoutine());
-      }
-
-      IEnumerator RespawnRoutine()
-      {
-        while (true)
-        {
-          if(entityList.Any())
-          {
-            foreach (var entity in entityList)
-            {
-              if (entity.Value.Equals(false)) 
-              {
-                entity.Key.GetComponent<Entity>().Revive(GetRespawnToken());
-                Debug.Log("Revive " + entity.Key.Name);
-                
-                RegisterRespawn(entity.Key);
-              }
-            }
-            // if(entity.)
-            
-            yield return new WaitForSeconds(GetSpawnTimeFromRange());
-            
-            // if(entityList.GetEnumerator().Current.Value == false)
-            // spawnableEntities[0].gameObject.transform.position = GetSpawnPosition();
-            // entityList.ContainsValue(false);
-            // spawnableEntities[0].GetComponent<Entity>().Revive(GetRespawnToken());
-
-            
-          }
-          else 
-          {
-            yield return new WaitForSeconds(GetSpawnTimeFromRange());
-            continue;
-          }
-          
-        }
-      }
 
       public RespawnToken GetRespawnToken()
       {
@@ -164,36 +129,40 @@ namespace Lily
 
     #region [teal] Checks
 
-    void RegisterRespawn(Entity entity)
-    {
-      // if (spawnableEntities.Contains(entity)) spawnableEntities.Remove(entity);
-
-      // if (!localEntities.Contains(entity)) localEntities.Add(entity);
-
-      if (entityList.ContainsKey(entity)) entityList[entity] = true;
-      
-    }
-    void RegisterSpawn(Entity entity)
+      void RegisterRespawn(Entity entity)
       {
-        // GameManager.totalSpawnedEntities.Add(spawn);
+        // if (spawnableEntities.Contains(entity)) spawnableEntities.Remove(entity);
+
         // if (!localEntities.Contains(entity)) localEntities.Add(entity);
 
-        if (!entityList.ContainsKey(entity)) entityList.Add(entity, true);
-
-        spawnCount++;
-      }
-
-      void RegisterDeath(Entity entity)
-      {
-        // if (localEntities.Contains(entity)) localEntities.Remove(entity);
-
-        // if (!spawnableEntities.Contains(entity)) spawnableEntities.Add(entity);
-        entity.GetComponent<Entity>().Revive(GetRespawnToken());
-
-        if (entityList.ContainsKey(entity)) entityList.Add(entity, false);
+        if (entityList.ContainsKey(entity)) entityList[entity] = true;
         
+      }
+      void RegisterSpawn(Entity entity)
+        {
+          // GameManager.totalSpawnedEntities.Add(spawn);
+          // if (!localEntities.Contains(entity)) localEntities.Add(entity);
+
+          if (!entityList.ContainsKey(entity)) entityList.Add(entity, true);
+
+          spawnCount++;
+        }
+
+      public void RegisterDeath(Entity entity)
+      {
+        Entity Respawn;
+        StartCoroutine(ReviveRoutine(GetRespawnToken()));
+        IEnumerator ReviveRoutine(RespawnToken token)
+        {
+          yield return new WaitForSeconds(token.TimeBetweenSpawn);
+          Respawn = entity.GetComponent<Entity>();
+          Respawn.transform.position = token.SpawnLocation;
+          Respawn.gameObject.SetActive(true);
+          Respawn.Health = 1;
+        }
+
         spawnCount--;
-        // else Debug.LogWarning("failed to register death: " + entity.name + " is not registered in localEntities");
+        // else 
       }
 
       public Vector3 GetSpawnPosition()

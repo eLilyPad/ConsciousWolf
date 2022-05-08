@@ -12,7 +12,6 @@ namespace Lily.MovementSystem.Locomotion
 		Rigidbody rb;
 		MovementController mc;
 		[SerializeField] Animator anim;
-		[SerializeField] Camera camera;
 		//-----------------------------------------------------------
 		//Movement Parameters
 		[SerializeField] Transform orientation;
@@ -45,7 +44,6 @@ namespace Lily.MovementSystem.Locomotion
 			// this.maxSpeed = movementSettings.MaxSpeed;
 			// this.acceleration = movementSettings.Acceleration;
 			anim = GetComponent<Animator>();
-			camera = GetComponent<Camera>();
 
 		}
 

@@ -16,7 +16,7 @@ namespace Lily.Ai.ActionStates
 		{
 			StopMoving();
 
-			if(ai.TargetObj != null) AttackMove();
+			// if(ai.TargetObj != null) AttackMove();
     }
 
 		void StopMoving()

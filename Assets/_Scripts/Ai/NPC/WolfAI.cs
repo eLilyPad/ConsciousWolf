@@ -42,6 +42,11 @@ namespace Lily.Ai
 
 			planner.StartPlanner(this);
 		}
+
+		void OnDisable()
+		{
+			planner.StopPlanner(this);
+		}
 		private void Update() 
 		{
 			_stateMachine.Tick();

@@ -124,6 +124,7 @@ GameObject:
   - component: {fileID: 314947751}
   - component: {fileID: -3477016694787692104}
   - component: {fileID: 1293574280033302044}
+  - component: {fileID: -4875520411189555619}
   m_Layer: 8
   m_Name: Rabbit
   m_TagString: Rabbit
@@ -174,7 +175,7 @@ BoxCollider:
   m_GameObject: {fileID: 5296105018882928867}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 2
   m_Size: {x: 1, y: 1.46, z: 1.91}
   m_Center: {x: 0, y: 0.79, z: 0.09}
@@ -190,10 +191,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 97a92928ec380704293eb3925fc70b20, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Manager: {fileID: 0}
   entityID: 0
   Name: 
   rb: {fileID: 6114137984952116211}
-  data: {fileID: 0}
   Health: 1
   Target: {fileID: 0}
   waypoint: {x: 0, y: 0, z: 0}
@@ -245,6 +246,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b3c2b4fc721b68e42bd08e9b4706b324, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!64 &-4875520411189555619
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5296105018882928867}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 4
+  m_Convex: 1
+  m_CookingOptions: 30
+  m_Mesh: {fileID: -462981019419857548, guid: 2677921b246f0244d922dc1d915e8ebf, type: 3}
 --- !u!1001 &6528546093426315957
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -20,6 +20,16 @@ namespace Lily.Ai
 			rb = GetComponent<Rigidbody>();
 			_stateMachine = new BasicStateMachine();//calls a new state machine
 
+			TaskMachine();
+		}
+
+		void OnEnable()
+		{
+			TaskMachine();
+		}
+
+		void TaskMachine()
+		{
 			var Search = new FindClosestTargetWithTag(this, targetTag);
 			var Rest = new Rest(this, rb);
 			var MoveToTarget = new MoveToTarget(this, rb);
@@ -47,6 +57,10 @@ namespace Lily.Ai
 			Func<bool> InAttackRange() => () => CheckAttackRange() == true;
 
 			planner.StartPlanner(this);
+		}
+		void OnDisable()
+		{
+			planner.StopPlanner(this);
 		}
 
 		private void Update() 

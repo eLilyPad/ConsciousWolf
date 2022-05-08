@@ -10,6 +10,9 @@ scopes = {
 	"last_search.2B72EE4B" = "Enti"
 	"OpenInspectorPreview.2B72EE4B" = "0"
 	"currentGroup.2B72EE4B" = "all"
+	"last_search.B33209F0" = "plane"
+	"OpenInspectorPreview.B33209F0" = "0"
+	"currentGroup.B33209F0" = "all"
 }
 providers = {
 	adb = {

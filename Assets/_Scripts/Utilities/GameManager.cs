@@ -17,6 +17,8 @@ namespace Lily
     // List<EntityManager> entityManagers = new List<EntityManager>();
     public Dictionary<string, EntityManager> entityManagers = new Dictionary<string, EntityManager>();
     
+    public EntityData FoodData, RabbitData;
+
     protected override void OnAwake()
     {
       // foreach(EntityData data in entityDataList) entityManagers.Add(InitializeManager(data));
@@ -25,6 +27,8 @@ namespace Lily
 
     void Update()
     {
+      FoodData = entityDataList[0];
+      RabbitData = entityDataList[1];
       GetGlobalEntities();
     }
     
