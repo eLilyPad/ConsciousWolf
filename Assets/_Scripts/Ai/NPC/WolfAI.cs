@@ -7,8 +7,12 @@ namespace Lily.Ai
 	using ActionStates;
 	using StateMachine;
 	using Pathfinder;
+  using System.Collections.Generic;
+
   public class WolfAI : BasicAI
   {
+		
+		// public list<MovementModifier> moveModifiers = new List<MovementModifier>();
 		void Awake()
 		{
 			rb = GetComponent<Rigidbody>();

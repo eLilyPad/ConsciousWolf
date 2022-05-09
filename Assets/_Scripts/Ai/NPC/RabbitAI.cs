@@ -7,7 +7,6 @@ namespace Lily.Ai
 	using ActionStates;
 	using StateMachine;
 	using Pathfinder;
-	using MovementSystem.Controller;
   using UnityEngine.VFX;
 
   public class RabbitAI : BasicAI

@@ -88,7 +88,7 @@ float4 EvaluateLayeredNoise(float3 p,float3 offset, float strength, int octaves,
     return noiseVector * strength;
 }
  
-void SimplexNoise3D_float(float3 In, out float Noise, out float3 Gradient){
+void SimplexNoise3D_half(float3 In, out float Noise, out float3 Gradient){
     float4 noise_vector;
     noise_vector = snoise_grad(In);        
     Noise = noise_vector.w;

@@ -1,8 +1,7 @@
 using UnityEngine;
 
-namespace Lily.MovementSystem.Locomotion
+namespace Lily.MovementSystem
 {
-	using Controller;
 
 	[RequireComponent(typeof(Rigidbody))]
 	[RequireComponent(typeof(Transform))]

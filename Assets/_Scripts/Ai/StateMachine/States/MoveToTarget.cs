@@ -60,29 +60,6 @@ namespace Lily.Ai.ActionStates
 			}
 			return movementSpeed;
 		}
-
-		void RotateYToTarget(Vector3 target, float turnSpeed, bool smoothing = true)
-		{
-			target.Normalize();
-			
-			float targetRotation = -1 * (Mathf.Atan2(target.z, target.x) * Mathf.Rad2Deg);;
-			float rotation = targetRotation;
-			/* If we have a non-zero direction then look towards that direciton otherwise do nothing */
-			if (target.sqrMagnitude < 0.001f)
-			{
-				return;
-			}
-			if(!smoothing)
-			{
-				_ai.transform.LookAt(target);
-				return;
-			}
-			/* Mulitply by -1 because counter clockwise on the y-axis is in the negative direction */
-			rotation = Mathf.LerpAngle(_ai.transform.rotation.eulerAngles.y, targetRotation, Time.deltaTime * turnSpeed);
-			_ai.transform.rotation = Quaternion.Euler(0, rotation, 0);
-
-			//_ai.transform.rotation = Quaternion.Euler(0, rotation, 0);
-		}
 		bool IsLookingAt(Vector3 target, float angleThreshold = 0.5f)
 		{
 			Vector3 facing = _ai.transform.right.normalized;
@@ -95,27 +72,6 @@ namespace Lily.Ai.ActionStates
 	#endregion
 		
 	#region [blue] Movement Conditions 
-		void CheckProgress()
-		{ 
-      float distanceFromTarget = Vector3.Distance(_ai.transform.position, _ai.waypoint);
-			if(distanceFromTarget < _ai.stoppingDst)
-			{
-				AtWaypoint();
-			}
-      else 
-      {
-        NotAtWaypoint();
-      }
-		}
-		void AtWaypoint()
-		{
-			_ai.AtWayPoint = true;
-		}
-
-		void NotAtWaypoint()
-		{
-			_ai.AtWayPoint = false;
-		}
 
 		public bool WithinRangeOfTarget()
 		{
