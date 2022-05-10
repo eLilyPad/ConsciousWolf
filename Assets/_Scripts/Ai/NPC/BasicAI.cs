@@ -21,7 +21,11 @@ namespace Lily.Ai
 			public string targetTag;
 
 			public float acceleration;
+			public float maxSpeed;
+
     	public float turnDst = 5;
+			public float turnSpeed = 50;
+
   		public float stoppingDst = 10;
 			public Path currentPath;
 			public int pathIndex;

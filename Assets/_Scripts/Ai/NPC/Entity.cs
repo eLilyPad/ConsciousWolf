@@ -5,10 +5,9 @@ using UnityEngine;
 
 namespace Lily
 {
-  public class Entity : MonoBehaviour, IDamagable, IRevivable
+  public class Entity : MonoBehaviour, ITakeDamage
   {
     public static event Action<Entity> OnDeath;
-    public EntityManager Manager;
     public int entityID;
     public string Name;
     public Rigidbody rb;
@@ -27,19 +26,6 @@ namespace Lily
 
       this.gameObject.SetActive(false);
 		}
-
-    public void Revive(RespawnToken token)
-    {
-      // if(token != null)
-      // {
-      //   this.transform.position = token.SpawnLocation;
-
-      //   this.Health = 1;
-      //   this.gameObject.SetActive(true);
-      // }
-      // StartCoroutine(ReviveRoutine(token));
-    }
-
     
   }
 }

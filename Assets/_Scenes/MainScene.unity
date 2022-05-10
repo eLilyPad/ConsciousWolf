@@ -5694,19 +5694,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6645680006304146120, guid: 896386417c6ddf84b93f000d22cac7d6, type: 3}
       propertyPath: m_LocalRotation.w
-      value: -0.2788837
+      value: -0.27879712
       objectReference: {fileID: 0}
     - target: {fileID: 6645680006304146120, guid: 896386417c6ddf84b93f000d22cac7d6, type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0.06425027
+      value: -0.06423032
       objectReference: {fileID: 0}
     - target: {fileID: 6645680006304146120, guid: 896386417c6ddf84b93f000d22cac7d6, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0.9337144
+      value: -0.9337402
       objectReference: {fileID: 0}
     - target: {fileID: 6645680006304146120, guid: 896386417c6ddf84b93f000d22cac7d6, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0.2151124
+      value: 0.21511836
       objectReference: {fileID: 0}
     - target: {fileID: 6645680006304146121, guid: 896386417c6ddf84b93f000d22cac7d6, type: 3}
       propertyPath: m_Lens.m_SensorSize.x
@@ -6534,7 +6534,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &2035447646
 Transform:
   m_ObjectHideFlags: 0
@@ -7333,7 +7333,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1815549049994669328}
-  m_LocalRotation: {x: 0.21512426, y: -0.2788212, z: 0.06423819, w: 0.93373114}
+  m_LocalRotation: {x: 0.21513017, y: -0.27873465, z: 0.06421824, w: 0.93375695}
   m_LocalPosition: {x: -10.539746, y: 33.192177, z: -46.59973}
   m_LocalScale: {x: 1.0000002, y: 1.0000001, z: 1.0000004}
   m_ConstrainProportionsScale: 0

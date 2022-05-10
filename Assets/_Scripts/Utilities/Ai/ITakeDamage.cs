@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Lily
 {
-    public interface IDamagable
+    public interface ITakeDamage
     { 
         // int Health { get; set;}
 

@@ -199,7 +199,6 @@ MonoBehaviour:
   Target: {fileID: 0}
   waypoint: {x: 0, y: 0, z: 0}
   targetTag: Food
-  maxAcceleration: 20
   acceleration: 9
   turnDst: 5
   stoppingDst: 0
@@ -207,11 +206,8 @@ MonoBehaviour:
   PathComplete: 0
   AtWayPoint: 0
   AttackRange: 4
-  AvoidanceRange: 2
-  InAvoidanceRange: 0
   drawGizmos: 0
   planner: {fileID: 0}
-  audioManager: {fileID: 0}
   deathEffect: {fileID: 4893278535599750255, guid: d4607469b6c3d0444a743a1d0afc9dba, type: 3}
   TargetObj: {fileID: 0}
 --- !u!95 &-3477016694787692104

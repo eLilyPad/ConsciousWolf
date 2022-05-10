@@ -104,9 +104,10 @@ namespace Lily
         if (entity == null) entity = spawn.AddComponent<Entity>();
         // Entity entity = spawn.AddComponent<Entity>();
 
+        spawn.AddComponent<KillBy>();
+
         entity.entityID = ID;
         entity.Name = name;
-        entity.Manager = this;
         // entity.OnDeath += RegisterDeath;
         
 

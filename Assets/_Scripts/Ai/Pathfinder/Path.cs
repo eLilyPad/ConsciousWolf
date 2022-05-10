@@ -1,9 +1,10 @@
 using UnityEngine;
+using System;
 
 namespace Lily.Ai.Pathfinder
 {
-  using System;
-  using MathsUtils;
+  
+  using Lily.Utilities;
   public class Path
   {
     

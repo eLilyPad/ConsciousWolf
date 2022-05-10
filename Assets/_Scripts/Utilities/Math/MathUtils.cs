@@ -1,8 +1,9 @@
 
 
+using System.Collections.Generic;
 using UnityEngine;
 
-namespace Lily.MathsUtils
+namespace Lily.Utilities
 {
   public class MathsUtils
   {
@@ -64,6 +65,30 @@ namespace Lily.MathsUtils
       }
 
       return distances;
+    }
+  
+    public static Vector3 SmoothSamples(Vector3 input, int SampleCount = 5)
+    {
+      Queue<Vector3> samples = new Queue<Vector3>();
+      Vector3 direction = input;
+
+      if (samples.Count == SampleCount)
+      {
+        samples.Dequeue();
+      }
+
+      samples.Enqueue(input);
+
+      direction = Vector3.zero;
+
+      foreach (Vector3 v in samples)
+      {
+        direction += v;
+      }
+
+      direction /= samples.Count;
+
+      return direction;
     }
   }
 }
